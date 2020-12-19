@@ -1,8 +1,10 @@
-package com.bluemap.overcom_blue
+package com.bluemap.overcom_blue.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bluemap.overcom_blue.model.DiagnosisModel
+import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.databinding.ItemDiagnosisBinding
 import kotlinx.android.synthetic.main.item_diagnosis.view.*
 
@@ -16,7 +18,7 @@ class DiagnosisAdapter(val list: ArrayList<DiagnosisModel>) : RecyclerView.Adapt
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: DiagnosisAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.tag=position
         holder.bind(list[position])
     }

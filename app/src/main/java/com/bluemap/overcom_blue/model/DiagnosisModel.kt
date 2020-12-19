@@ -1,4 +1,4 @@
-package com.bluemap.overcom_blue
+package com.bluemap.overcom_blue.model
 
 data class DiagnosisModel(
     val text: String,

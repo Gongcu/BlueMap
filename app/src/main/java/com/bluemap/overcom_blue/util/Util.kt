@@ -1,7 +1,7 @@
 package com.bluemap.overcom_blue.util
 
 import android.app.Application
-import com.bluemap.overcom_blue.DiagnosisModel
+import com.bluemap.overcom_blue.model.DiagnosisModel
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 
@@ -29,7 +29,7 @@ object Util {
         list.add(DiagnosisModel("나는 항상 피곤하다."))
         list.add(DiagnosisModel("요즘 식욕이 거의 없다."))
         list.add(DiagnosisModel("과거에 비해 몸무게가 줄었다."))
-        list.add(DiagnosisModel("과거에 비해 건강이 열려되어 아무 일도 할 수가 없다."))
+        list.add(DiagnosisModel("과거에 비해 건강이 염려되어 아무 일도 할 수가 없다."))
         list.add(DiagnosisModel("과거에 비해 성욕이 줄었다."))
 
     }

@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import com.bluemap.overcom_blue.BaseApplication
+import com.bluemap.overcom_blue.application.BaseApplication
 import com.bluemap.overcom_blue.NavMainDirections
 import com.bluemap.overcom_blue.R
-import com.bluemap.overcom_blue.Repository
+import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.model.Post
 import kotlinx.android.synthetic.main.fragment_post.back_btn
 import kotlinx.android.synthetic.main.fragment_post.back_text_view
@@ -20,7 +20,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class PostWriteFragment : Fragment() {
-    private lateinit var repository :Repository
+    private lateinit var repository : Repository
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

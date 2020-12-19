@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import com.bluemap.overcom_blue.DiagnosisAdapter
-import com.bluemap.overcom_blue.DiagnosisModel
+import com.bluemap.overcom_blue.adapter.DiagnosisAdapter
+import com.bluemap.overcom_blue.model.DiagnosisModel
 import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.util.Util
 import kotlinx.android.synthetic.main.fragment_diagnosis.*

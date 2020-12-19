@@ -12,7 +12,12 @@
         tools:layout="@layout/fragment_community" >
         <action
             android:id="@+id/action_communityFragment_to_postWriteFragment"
-            app:destination="@id/postWriteFragment" />
+            app:destination="@id/postWriteFragment"
+            app:enterAnim="@anim/horizontal_enter" />
+        <action
+            android:id="@+id/action_communityFragment_to_postFragment"
+            app:destination="@id/postFragment"
+            app:enterAnim="@anim/horizontal_enter" />
     </fragment>
     <fragment
         android:id="@+id/diagnosisFragment"
@@ -21,7 +26,9 @@
         tools:layout="@layout/fragment_diagnosis" >
         <action
             android:id="@+id/action_diagnosisFragment_to_resultFragment"
-            app:destination="@id/resultFragment" />
+            app:destination="@id/resultFragment"
+            app:enterAnim="@anim/vertical_enter"
+            app:exitAnim="@anim/vertical_exit" />
     </fragment>
     <fragment
         android:id="@+id/resultFragment"
@@ -30,7 +37,9 @@
         tools:layout="@layout/fragment_result" >
         <action
             android:id="@+id/action_resultFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
+            app:destination="@id/mapFragment"
+            app:enterAnim="@anim/horizontal_enter"
+            app:exitAnim="@anim/horizontal_exit" />
         <argument
             android:name="totalPoint"
             app:argType="integer"
@@ -45,5 +54,18 @@
         android:id="@+id/postWriteFragment"
         android:name="com.bluemap.overcom_blue.fragment.PostWriteFragment"
         android:label="fragment_post_write"
-        tools:layout="@layout/fragment_post_write" /><action android:id="@+id/action_global_communityFragment" app:destination="@id/communityFragment"/>
+        tools:layout="@layout/fragment_post_write" />
+    <action
+        android:id="@+id/action_global_communityFragment"
+        app:destination="@id/communityFragment"
+        app:enterAnim="@anim/horizontal_enter" />
+    <fragment
+        android:id="@+id/postFragment"
+        android:name="com.bluemap.overcom_blue.fragment.PostFragment"
+        android:label="fragment_post"
+        tools:layout="@layout/fragment_post" >
+        <argument
+            android:name="postId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

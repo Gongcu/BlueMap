@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.bluemap.overcom_blue.BaseApplication
+import com.bluemap.overcom_blue.application.BaseApplication
 import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.model.User
 import com.bluemap.overcom_blue.util.Util

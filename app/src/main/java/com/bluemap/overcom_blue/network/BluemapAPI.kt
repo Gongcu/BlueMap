@@ -43,13 +43,14 @@ interface BluemapAPI {
         @Path("postId") postId:Int,
         @Body comment: Comment) : Call<List<Comment>>
 
-    /*
+
     @POST("post/{postId}/reply/{commentId}")
-    fun replyComment(
+    fun writeReplyComment(
         @Path("postId") postId:Int,
         @Path("commentId") commentId:Int,
-        @Body comment: Comment) : Call<List<Comment>>
-    */
+        @Body comment: Comment
+    ) : Call<List<Comment>>
+
 
     @PATCH("post/like/{postId}/{userId}")
     fun likePost(

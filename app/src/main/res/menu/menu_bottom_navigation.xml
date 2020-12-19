@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@id/communityFragment"
-        android:icon="@drawable/ic_baseline_insert_drive_file_24"
+        android:icon="@drawable/ic_baseline_format_list_bulleted_24"
         android:title="@string/communityFragment" />
 
     <item
         android:id="@id/diagnosisFragment"
-        android:icon="@drawable/ic_baseline_format_list_bulleted_24"
+        android:icon="@drawable/ic_baseline_assignment_24"
         android:title="@string/diagnosisFragment" />
 </menu>
