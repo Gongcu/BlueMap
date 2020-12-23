@@ -23,6 +23,8 @@ import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.dialog_center_info.view.*
 import kotlinx.android.synthetic.main.fragment_map.*
 import retrofit2.Call
@@ -30,7 +32,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
-    private var INIT = true
+    private var lat: Double = 37.57
+    private var lng: Double = 126.97
     lateinit var repository: Repository
     lateinit var centers: List<Center>
     lateinit var naverMap: NaverMap
@@ -57,8 +60,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
     }
 
     override fun onMapReady(naverMap: NaverMap) {
-        var lat: Double = 37.57
-        var lng: Double = 126.97
         this.naverMap = naverMap
 
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -71,7 +72,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
                 return makeInfoWindow(infoWindow)
             }
         }
-        Log.d("before","${lat},${lng}")
 
         //Get Current Location. Then, add markers
         locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,object: LocationListener{
@@ -79,15 +79,14 @@ class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
                 if(location!=null){
                     lat = location.latitude
                     lng = location.longitude
-                    Log.d("LatLng","${lat},${lng}")
                 }
                 naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(lat,lng)))
-                repository.getCenter(lat, lng).enqueue(addCenterCallback)
+                setCenters(lat,lng)
             }
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
             override fun onProviderEnabled(provider: String?) {}
             override fun onProviderDisabled(provider: String?) {
-                repository.getCenter(lat, lng).enqueue(addCenterCallback)
+                setCenters(lat,lng)
             }
         }, Looper.myLooper())
     }
@@ -134,18 +133,14 @@ class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
         return view
     }
 
-    private val addCenterCallback = object: Callback<List<Center>>{
-        override fun onResponse(call: Call<List<Center>>, response: Response<List<Center>>) {
-            if (response.isSuccessful) {
-                centers = response.body()!!
-                Log.d("GET:CENTER", response.body().toString())
+    private fun setCenters(lat:Double,lng:Double){
+        repository.getCenter(lat,lng)
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(Schedulers.io())
+            .subscribe{ it ->
+                centers = it
                 for (i in centers.indices)
                     addMarker(centers[i].latitude, centers[i].longitude, i)
             }
-        }
-
-        override fun onFailure(call: Call<List<Center>>, t: Throwable) {
-            Log.d("GET:CENTER", t.message)
-        }
     }
 }

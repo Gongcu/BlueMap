@@ -12,6 +12,8 @@ import com.bluemap.overcom_blue.NavMainDirections
 import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.model.Post
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_post.back_btn
 import kotlinx.android.synthetic.main.fragment_post.back_text_view
 import kotlinx.android.synthetic.main.fragment_post_write.*
@@ -35,18 +37,16 @@ class PostWriteFragment : Fragment() {
         val userId = (activity!!.application as BaseApplication).userId
         done_btn.setOnClickListener {
             val post: Post = Post(userId,title_edit_text_view.text.toString(),content_edit_text_view.text.toString())
-            repository.writePost(post).enqueue(object: Callback<Void>{
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if(response.code()==200){
-                        val directions = NavMainDirections.actionGlobalCommunityFragment()
-                        findNavController().navigate(directions)
-                    }
-                }
-
-                override fun onFailure(call: Call<Void>, t: Throwable) {
+            repository.writePost(post)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    val directions = NavMainDirections.actionGlobalCommunityFragment()
+                    findNavController().navigate(directions)
+                },{
                     Toast.makeText(context,"게시글 작성에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                }
-            })
+
+                })
         }
 
         back_btn.setOnClickListener(onClickListener)

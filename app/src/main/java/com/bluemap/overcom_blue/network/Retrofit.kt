@@ -1,6 +1,7 @@
 package com.bluemap.overcom_blue.network
 
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 object Retrofit{
@@ -8,8 +9,9 @@ object Retrofit{
     fun getInstance():Retrofit{
         if(instance ==null){
             instance = Retrofit.Builder()
-                    .baseUrl("http://133.186.159.137:3000/")
+                    .baseUrl("https://www.bluemap.site/")
                     .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build()
         }
         return instance!!

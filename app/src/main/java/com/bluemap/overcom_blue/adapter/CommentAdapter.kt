@@ -1,6 +1,7 @@
 package com.bluemap.overcom_blue.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -86,6 +87,7 @@ class CommentAdapter(val context: Context,
             binding.root.tag=model.id
             binding.model=model
             binding.likeBtn.setOnClickListener {
+                Log.d("ASDF",adapterPosition.toString())
                 commentLikeClick(adapterPosition)
             }
             if(model.like == 1)

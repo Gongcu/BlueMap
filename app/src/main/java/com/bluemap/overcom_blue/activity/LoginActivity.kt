@@ -8,6 +8,8 @@ import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.network.Retrofit
 import com.bluemap.overcom_blue.model.User
 import com.bluemap.overcom_blue.repository.Repository
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,20 +24,21 @@ class LoginActivity : AppCompatActivity() {
 
         login_btn.setOnClickListener {
             if(name_text_view.text.toString().isNotBlank())
-                repository.postUser(User(name_text_view.text.toString())).enqueue(object: Callback<User>{
-                    override fun onResponse(call: Call<User>, response: Response<User>) {
-                        if(response.isSuccessful){
-                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            intent.putExtra("user",response.body())
-                            startActivity(intent)
-                            this@LoginActivity.finish()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<User>, t: Throwable) {
-                        Log.d("LOGIN_ACTIVITY", t.message)
-                    }
-                })
+                repository.postUser(User(name_text_view.text.toString()))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe({
+                        startMainActivity(it)
+                    },{
+                        Log.d("LOGIN_ACTIVITY", it.message)
+                    })
         }
+    }
+
+    private fun startMainActivity(user: User){
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        intent.putExtra("user",user)
+        startActivity(intent)
+        this@LoginActivity.finish()
     }
 }

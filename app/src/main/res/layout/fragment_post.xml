@@ -7,6 +7,9 @@
     >
     <data>
         <variable
+            name="fragment"
+            type="com.bluemap.overcom_blue.fragment.PostFragment" />
+        <variable
             name="model"
             type="com.bluemap.overcom_blue.model.Post" />
     </data>
@@ -28,6 +31,7 @@
             <ImageView
                 android:id="@+id/back_btn"
                 android:background="@drawable/ic_baseline_arrow_back_24"
+                android:onClick="@{()->fragment.back()}"
                 android:layout_marginLeft="4dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"/>
@@ -35,6 +39,7 @@
             <TextView
                 android:id="@+id/back_text_view"
                 android:text="뒤로가기"
+                android:onClick="@{()->fragment.back()}"
                 android:fontFamily="@font/kopub_dotum_light"
                 android:textColor="@color/deepBlue"
                 android:textSize="20dp"
@@ -83,6 +88,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/like_btn"
             android:clickable="true"
+            android:onClick="@{() -> fragment.likePost(model.id)}"
             app:srcCompat="@drawable/ic_outline_thumb_up_24"
             android:tint="@color/deepGray"
             android:layout_marginTop="8dp"
@@ -246,6 +252,7 @@
 
             <ImageView
                 android:id="@+id/write_comment_btn"
+                android:onClick="@{() -> fragment.writeComment()}"
                 android:background="@drawable/ic_baseline_arrow_upward_24"
                 android:layout_marginLeft="4dp"
                 android:layout_width="30dp"

@@ -8,6 +8,7 @@ import com.bluemap.overcom_blue.model.Post
 import com.bluemap.overcom_blue.model.User
 import com.bluemap.overcom_blue.network.BluemapAPI
 import com.bluemap.overcom_blue.network.Retrofit
+import io.reactivex.Single
 import retrofit2.Call
 
 class Repository(val application: Application) {
@@ -15,44 +16,44 @@ class Repository(val application: Application) {
     private val bluemapAPI = retrofit.create(BluemapAPI::class.java)
     private val userId = (application as BaseApplication).userId
 
-    fun postUser(user: User):Call<User>{
+    fun postUser(user: User):Single<User>{
         return bluemapAPI.postUser(user)
     }
 
-    fun getPostById(postId:Int):Call<Post>{
+    fun getPostById(postId:Int):Single<Post>{
         return bluemapAPI.getPostById(postId,userId)
     }
 
-    fun getComment(postId: Int):Call<List<Comment>>{
+    fun getComment(postId: Int):Single<List<Comment>>{
         return bluemapAPI.getComment(postId,userId)
     }
 
-    fun writeComment(postId: Int,comment:Comment):Call<List<Comment>>{
+    fun writeComment(postId: Int,comment:Comment):Single<List<Comment>>{
         return bluemapAPI.writeComment(postId, comment)
     }
 
-    fun writeReplyComment(postId:Int, commentId: Int,comment: Comment): Call<List<Comment>> {
+    fun writeReplyComment(postId:Int, commentId: Int,comment: Comment): Single<List<Comment>> {
         return bluemapAPI.writeReplyComment(postId,commentId,comment)
     }
 
-    fun likeComment(commentId: Int):Call<Boolean>{
+    fun likeComment(commentId: Int):Single<Boolean>{
         return bluemapAPI.likeComment(commentId,userId)
     }
 
 
-    fun writePost(post: Post): Call<Void> {
+    fun writePost(post: Post): Single<Void> {
         return bluemapAPI.writePost(post)
     }
 
-    fun getPostList():Call<List<Post>> {
+    fun getPostList():Single<List<Post>> {
         return bluemapAPI.getPostList((application as BaseApplication).userId)
     }
 
-    fun getCenter(lat:Double, lng:Double):Call<List<Center>>{
+    fun getCenter(lat:Double, lng:Double):Single<List<Center>>{
         return bluemapAPI.getCenter(lat,lng)
     }
 
-    fun likePost(postId: Int):Call<Boolean>{
+    fun likePost(postId: Int):Single<Boolean>{
         return bluemapAPI.likePost(postId,userId)
     }
 }

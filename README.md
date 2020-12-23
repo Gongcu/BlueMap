@@ -18,5 +18,14 @@
 - 사용자 위치 기반 정신 보건 시설 위치 제공
 - 우울증 극복 후기, 방법을 공유하는 커뮤니티
 
+### STACK🛠
+- Kotlin
+- RxJava
+- Data binding
+- Navigation Component
+- Retrofit
+- Naver Maps(Dynamic Mobile Map)
+- API 서버: Node.js, MySQL, Toast Cloud
+
 [시연영상](https://www.youtube.com/watch?v=zXRzkeUgGnc&ab_channel=%EA%B3%B5%EC%B1%84%EC%9A%B4)
 

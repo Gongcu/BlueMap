@@ -12,6 +12,8 @@ import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.activity.MainActivity
 import com.bluemap.overcom_blue.adapter.PostAdapter
 import com.bluemap.overcom_blue.model.Post
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_community.*
 import retrofit2.Call
@@ -19,6 +21,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class CommunityFragment : Fragment() {
+    private var REFRESH = false
     lateinit var repository: Repository
     lateinit var adapter: PostAdapter
     override fun onCreateView(
@@ -38,27 +41,15 @@ class CommunityFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         (requireActivity() as MainActivity).main_bottom_navigation.visibility=View.VISIBLE
-        repository.getPostList().enqueue(object: Callback<List<Post>> {
-            override fun onResponse(call: Call<List<Post>>, response: Response<List<Post>>) {
-                Log.d("GET:POST",response.body()!!.toString())
-                if(response.code()==200){
-                    val list =response.body()!!
-                    adapter.setList(ArrayList(list))
-                    Log.d(TAG,response.body()!!.toString())
-                }
-            }
-            override fun onFailure(call: Call<List<Post>>, t: Throwable) {
-                Log.d("GET:POST",t.message)
-            }
-        })
-
+        setPost()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler_view.adapter = adapter
         swipe_refresh_layout.setOnRefreshListener {
-            repository.getPostList().enqueue(getListCallback)
+            REFRESH = true
+            setPost()
         }
         write_post_btn.setOnClickListener {
             val navDirections = CommunityFragmentDirections.actionCommunityFragmentToPostWriteFragment()
@@ -67,21 +58,26 @@ class CommunityFragment : Fragment() {
         }
     }
 
-    private val getListCallback = object: Callback<List<Post>>{
-        override fun onResponse(call: Call<List<Post>>, response: Response<List<Post>>) {
-            Log.d("GET:POST",response.body()!!.toString())
-            if(response.isSuccessful) {
-                val list =response.body()!!
-                adapter.setList(ArrayList(list))
-            }
-            swipe_refresh_layout.isRefreshing=false
-            Log.d(TAG, response.body().toString())
-        }
-        override fun onFailure(call: Call<List<Post>>, t: Throwable) {
-            Log.w(TAG, t.message)
-            swipe_refresh_layout.isRefreshing=false
-        }
+    private fun setPost(){
+        repository.getPostList()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe({
+                adapter.setList(ArrayList(it))
+                if(REFRESH)
+                    operateRefresh()
+            },{
+                Log.d("GET:POST",it.message!!)
+                if(REFRESH)
+                    operateRefresh()
+            })
     }
+
+    private fun operateRefresh(){
+        swipe_refresh_layout.isRefreshing = false
+        REFRESH=false
+    }
+
     companion object{
         const val TAG = "COMMUNITY_FRAGMENT"
     }
