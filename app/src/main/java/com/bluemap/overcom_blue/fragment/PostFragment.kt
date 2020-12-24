@@ -19,6 +19,7 @@ import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.adapter.CommentAdapter
 import com.bluemap.overcom_blue.databinding.FragmentPostBinding
 import com.bluemap.overcom_blue.model.Comment
+import com.bluemap.overcom_blue.util.Util
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -75,34 +76,34 @@ class PostFragment : Fragment() {
         findNavController().navigate(directions)
     }
 
-    private fun setComment(observable : Single<List<Comment>>){
+    private fun setComment(observable: Single<List<Comment>>) {
         observable
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-                adapter.setList(ArrayList(it))
-            },{
-                Log.d(TAG,it.message)
-            })
+                .doOnSubscribe {
+                    Util.progressOnInFragment(this)
+                }
+                .doFinally {
+                    Util.progressOffInFragment()
+                }
+                .subscribe({
+                    adapter.setList(ArrayList(it))
+                }, {
+                    Log.d(TAG, it.message)
+                })
     }
 
-    private fun setPost(postId:Int){
+    private fun setPost(postId: Int) {
         repository.getPostById(postId)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-                if(it.like == 1)
-                    like_btn.setColorFilter(ContextCompat.getColor(requireContext(), R.color.deepBlue), android.graphics.PorterDuff.Mode.SRC_IN)
-                binding.model = it
-            },{
-                Log.d(TAG,it.message)
-            })
+                .subscribe({
+                    if (it.like == 1)
+                        like_btn.setColorFilter(ContextCompat.getColor(requireContext(), R.color.deepBlue), android.graphics.PorterDuff.Mode.SRC_IN)
+                    binding.model = it
+                }, {
+                    Log.d(TAG, it.message)
+                })
     }
 
     fun likePost(postId: Int){
         repository.likePost(postId)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
             .subscribe { it ->
                 if (it) {
                     like_btn.setColorFilter(
@@ -122,8 +123,6 @@ class PostFragment : Fragment() {
 
     private fun likeComment(commentId: Int, position: Int) {
         repository.likeComment(commentId)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
             .subscribe { it ->
                 if (it) {
                     adapter.list[position].like = 1

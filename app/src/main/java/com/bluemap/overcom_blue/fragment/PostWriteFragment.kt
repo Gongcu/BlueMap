@@ -1,6 +1,7 @@
 package com.bluemap.overcom_blue.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.bluemap.overcom_blue.NavMainDirections
 import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.model.Post
+import com.bluemap.overcom_blue.util.Util
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_post.back_btn
@@ -38,14 +40,18 @@ class PostWriteFragment : Fragment() {
         done_btn.setOnClickListener {
             val post: Post = Post(userId,title_edit_text_view.text.toString(),content_edit_text_view.text.toString())
             repository.writePost(post)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+                    .doOnSubscribe {
+                        Util.progressOnInFragment(this)
+                    }.
+                    doFinally {
+                        Util.progressOffInFragment()
+                    }
                 .subscribe({
                     val directions = NavMainDirections.actionGlobalCommunityFragment()
                     findNavController().navigate(directions)
                 },{
                     Toast.makeText(context,"게시글 작성에 실패했습니다.", Toast.LENGTH_SHORT).show()
-
+                    Log.e("POST_WRITE",it.toString())
                 })
         }
 

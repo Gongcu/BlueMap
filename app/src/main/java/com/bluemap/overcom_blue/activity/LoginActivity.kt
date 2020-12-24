@@ -8,6 +8,7 @@ import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.network.Retrofit
 import com.bluemap.overcom_blue.model.User
 import com.bluemap.overcom_blue.repository.Repository
+import com.bluemap.overcom_blue.util.Util
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
@@ -23,15 +24,15 @@ class LoginActivity : AppCompatActivity() {
         repository = Repository(application)
 
         login_btn.setOnClickListener {
-            if(name_text_view.text.toString().isNotBlank())
+            if (name_text_view.text.toString().isNotBlank())
                 repository.postUser(User(name_text_view.text.toString()))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe({
-                        startMainActivity(it)
-                    },{
-                        Log.d("LOGIN_ACTIVITY", it.message)
-                    })
+                        .doOnSubscribe { Util.progressOn(this) }
+                        .doFinally { Util.progressOff() }
+                        .subscribe({
+                            startMainActivity(it)
+                        }, {
+                            Log.d("LOGIN_ACTIVITY", it.message)
+                        })
         }
     }
 

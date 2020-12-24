@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat
 import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.model.Center
+import com.bluemap.overcom_blue.util.Util
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.InfoWindow
@@ -135,8 +136,12 @@ class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
 
     private fun setCenters(lat:Double,lng:Double){
         repository.getCenter(lat,lng)
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .observeOn(Schedulers.io())
+                .doOnSubscribe {
+                    Util.progressOnInFragment(this)
+                }
+                .doFinally {
+                    Util.progressOffInFragment()
+                }
             .subscribe{ it ->
                 centers = it
                 for (i in centers.indices)

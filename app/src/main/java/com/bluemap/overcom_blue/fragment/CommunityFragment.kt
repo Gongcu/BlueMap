@@ -12,6 +12,7 @@ import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.activity.MainActivity
 import com.bluemap.overcom_blue.adapter.PostAdapter
 import com.bluemap.overcom_blue.model.Post
+import com.bluemap.overcom_blue.util.Util
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
@@ -60,17 +61,21 @@ class CommunityFragment : Fragment() {
 
     private fun setPost(){
         repository.getPostList()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-                adapter.setList(ArrayList(it))
-                if(REFRESH)
-                    operateRefresh()
-            },{
-                Log.d("GET:POST",it.message!!)
-                if(REFRESH)
-                    operateRefresh()
-            })
+                .doOnSubscribe {
+                    Util.progressOn(activity!!)
+                }
+                .doFinally {
+                    Util.progressOff()
+                }
+                .subscribe({
+                    adapter.setList(ArrayList(it))
+                    if (REFRESH)
+                        operateRefresh()
+                }, {
+                    Log.d("GET:POST", it.message!!)
+                    if (REFRESH)
+                        operateRefresh()
+                })
     }
 
     private fun operateRefresh(){

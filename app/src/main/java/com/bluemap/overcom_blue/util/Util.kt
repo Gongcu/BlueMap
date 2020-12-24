@@ -1,12 +1,23 @@
 package com.bluemap.overcom_blue.util
 
+import android.app.Activity
 import android.app.Application
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.widget.BaseExpandableListAdapter
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatDialog
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import com.bluemap.overcom_blue.R
+import com.bluemap.overcom_blue.application.BaseApplication
 import com.bluemap.overcom_blue.model.DiagnosisModel
+import com.bumptech.glide.Glide
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 
 object Util {
-    fun setDignosisPaper(list: ArrayList<DiagnosisModel>){
+    fun setDiagnosisPaper(list: ArrayList<DiagnosisModel>){
         //1~10
         list.add(DiagnosisModel("나는 슬픔을 느낀다."))
         list.add(DiagnosisModel("나는 앞날에 대해 낙담한다."))
@@ -50,5 +61,19 @@ object Util {
         }
         override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
         }
+    }
+
+    fun progressOnInFragment(fragment: Fragment){
+        BaseApplication.instance.progressOnInFragment(fragment)
+    }
+    fun progressOffInFragment(){
+        BaseApplication.instance.progressOffInFragment()
+    }
+
+    fun progressOn(activity: FragmentActivity){
+        BaseApplication.instance.progressOn(activity)
+    }
+    fun progressOff(){
+        BaseApplication.instance.progressOff()
     }
 }
