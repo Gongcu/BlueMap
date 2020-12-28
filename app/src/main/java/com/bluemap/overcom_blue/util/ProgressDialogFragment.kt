@@ -18,7 +18,7 @@ class ProgressDialogFragment :DialogFragment(){
         dialog.apply {
             setCancelable(false)
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            setContentView(R.layout.progress_bar)
+            setContentView(R.layout.loading_dialog)
         }
         Glide.with(activity!!).load(R.raw.rolling_loader)
                 .apply(RequestOptions().override(50,50))

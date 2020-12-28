@@ -26,6 +26,12 @@ class Repository(val application: Application) {
 
     }
 
+    fun patchNickname(user: User):Single<User>{
+        return bluemapAPI.patchNickname(user)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+    }
+
     fun getPostById(postId:Int):Single<Post>{
         return bluemapAPI.getPostById(postId,userId)
                 .observeOn(AndroidSchedulers.mainThread())

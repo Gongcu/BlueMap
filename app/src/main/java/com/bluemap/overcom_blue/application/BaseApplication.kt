@@ -1,16 +1,16 @@
 package com.bluemap.overcom_blue.application
 
+import android.app.Activity
 import android.app.Application
 import android.graphics.drawable.ColorDrawable
-import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.util.ProgressDialogFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.kakao.sdk.common.KakaoSdk
 
 class BaseApplication : Application(){
     var userId : Int = 0
@@ -18,10 +18,16 @@ class BaseApplication : Application(){
     override fun onCreate() {
         super.onCreate()
         instance=this
+        KakaoSdk.init(this,getString(R.string.kakao_app_key))
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        instance = null
     }
 
 
-    fun progressOn(view: FragmentActivity?) {
+    fun progressOn(view: Activity?) {
         if (view == null || view.isFinishing)
             return
 
@@ -29,7 +35,7 @@ class BaseApplication : Application(){
             dialog = AppCompatDialog(view).apply {
                 setCancelable(false)
                 window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
-                setContentView(R.layout.progress_bar)
+                setContentView(R.layout.loading_dialog)
                 show()
             }
         }
@@ -62,7 +68,7 @@ class BaseApplication : Application(){
     }
 
     companion object {
-        lateinit var instance : BaseApplication
+        var instance : BaseApplication? = null
             private set //Only BaseApplication set the instance value
         var dialog: AppCompatDialog? = null
         var fragmentDialog: ProgressDialogFragment? = null

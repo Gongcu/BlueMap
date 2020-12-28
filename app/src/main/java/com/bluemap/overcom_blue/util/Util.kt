@@ -64,16 +64,16 @@ object Util {
     }
 
     fun progressOnInFragment(fragment: Fragment){
-        BaseApplication.instance.progressOnInFragment(fragment)
+        BaseApplication.instance?.progressOnInFragment(fragment)
     }
     fun progressOffInFragment(){
-        BaseApplication.instance.progressOffInFragment()
+        BaseApplication.instance?.progressOffInFragment()
     }
 
     fun progressOn(activity: FragmentActivity){
-        BaseApplication.instance.progressOn(activity)
+        BaseApplication.instance?.progressOn(activity)
     }
     fun progressOff(){
-        BaseApplication.instance.progressOff()
+        BaseApplication.instance?.progressOff()
     }
 }

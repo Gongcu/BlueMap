@@ -40,18 +40,16 @@ class PostWriteFragment : Fragment() {
         done_btn.setOnClickListener {
             val post: Post = Post(userId,title_edit_text_view.text.toString(),content_edit_text_view.text.toString())
             repository.writePost(post)
-                    .doOnSubscribe {
-                        Util.progressOnInFragment(this)
-                    }.
-                    doFinally {
-                        Util.progressOffInFragment()
-                    }
+                .doOnSubscribe {
+                    Util.progressOnInFragment(this)
+                }.doFinally {
+                    Util.progressOffInFragment()
+                }
                 .subscribe({
-                    val directions = NavMainDirections.actionGlobalCommunityFragment()
-                    findNavController().navigate(directions)
-                },{
-                    Toast.makeText(context,"게시글 작성에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                    Log.e("POST_WRITE",it.toString())
+                    Toast.makeText(requireContext(), "게시글 작성 성공", Toast.LENGTH_SHORT).show()
+                }, {
+                    Toast.makeText(requireContext(), "게시글 작성 실패.", Toast.LENGTH_SHORT).show()
+                    Log.e("POST_WRITE", it.toString())
                 })
         }
 

@@ -35,6 +35,8 @@ interface BluemapAPI {
     @POST("user")
     fun postUser(@Body user: User) : Single<User>
 
+    @PATCH("user/nickname")
+    fun patchNickname(@Body user: User) : Single<User>
 
     @POST("post")
     fun writePost(@Body post: Post) : Single<Void>
