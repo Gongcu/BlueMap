@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/communityFragment"
-        android:name="com.bluemap.overcom_blue.fragment.CommunityFragment"
+        android:name="com.bluemap.overcom_blue.fragment.BoardFragment"
         android:label="fragment_community"
         tools:layout="@layout/fragment_community" >
         <action

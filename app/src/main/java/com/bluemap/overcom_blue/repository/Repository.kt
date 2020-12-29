@@ -9,6 +9,7 @@ import com.bluemap.overcom_blue.model.User
 import com.bluemap.overcom_blue.network.BluemapAPI
 import com.bluemap.overcom_blue.network.Retrofit
 import com.bluemap.overcom_blue.util.Util
+import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -63,7 +64,7 @@ class Repository(val application: Application) {
     }
 
 
-    fun writePost(post: Post): Single<Void> {
+    fun writePost(post: Post): Completable {
         return bluemapAPI.writePost(post)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

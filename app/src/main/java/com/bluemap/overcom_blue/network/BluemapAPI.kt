@@ -4,6 +4,7 @@ import com.bluemap.overcom_blue.model.Center
 import com.bluemap.overcom_blue.model.Comment
 import com.bluemap.overcom_blue.model.Post
 import com.bluemap.overcom_blue.model.User
+import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.http.*
@@ -39,7 +40,7 @@ interface BluemapAPI {
     fun patchNickname(@Body user: User) : Single<User>
 
     @POST("post")
-    fun writePost(@Body post: Post) : Single<Void>
+    fun writePost(@Body post: Post) : Completable
 
     @POST("post/{postId}/comment")
     fun writeComment(

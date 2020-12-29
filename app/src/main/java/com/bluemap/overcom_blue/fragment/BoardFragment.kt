@@ -21,7 +21,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CommunityFragment : Fragment() {
+class BoardFragment : Fragment() {
     private var REFRESH = false
     lateinit var repository: Repository
     lateinit var adapter: PostAdapter
@@ -30,7 +30,7 @@ class CommunityFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         adapter = PostAdapter(requireContext()) {
-            val directions = CommunityFragmentDirections.actionCommunityFragmentToPostFragment(it.id!!)
+            val directions = BoardFragmentDirections.actionCommunityFragmentToPostFragment(it.id!!)
             findNavController().navigate(directions)
             (requireActivity() as MainActivity).main_bottom_navigation.visibility=View.GONE
         }
@@ -53,7 +53,7 @@ class CommunityFragment : Fragment() {
             setPost()
         }
         write_post_btn.setOnClickListener {
-            val navDirections = CommunityFragmentDirections.actionCommunityFragmentToPostWriteFragment()
+            val navDirections = BoardFragmentDirections.actionCommunityFragmentToPostWriteFragment()
             findNavController().navigate(navDirections)
             (requireActivity() as MainActivity).main_bottom_navigation.visibility=View.GONE
         }
@@ -61,16 +61,11 @@ class CommunityFragment : Fragment() {
 
     private fun setPost(){
         repository.getPostList()
-                .doOnSubscribe {
-                    Util.progressOn(activity!!)
-                }
-                .doFinally {
-                    Util.progressOff()
-                }
                 .subscribe({
                     adapter.setList(ArrayList(it))
                     if (REFRESH)
                         operateRefresh()
+
                 }, {
                     Log.d("GET:POST", it.message!!)
                     if (REFRESH)
@@ -81,9 +76,5 @@ class CommunityFragment : Fragment() {
     private fun operateRefresh(){
         swipe_refresh_layout.isRefreshing = false
         REFRESH=false
-    }
-
-    companion object{
-        const val TAG = "COMMUNITY_FRAGMENT"
     }
 }
