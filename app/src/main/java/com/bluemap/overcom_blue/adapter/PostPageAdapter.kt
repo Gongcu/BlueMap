@@ -1,6 +1,7 @@
 package com.bluemap.overcom_blue.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -12,11 +13,9 @@ import com.bluemap.overcom_blue.databinding.ItemPostBinding
 import com.bluemap.overcom_blue.model.Post
 import kotlinx.android.synthetic.main.item_post.view.*
 
-class PostAdapter(val context: Context,
-                  var list: ArrayList<Post>,
-                  val postItemClick: (Post) -> Unit
-) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
-    constructor(context: Context,postItemClick: (Post) -> Unit):this(context,ArrayList(),postItemClick)
+class PostPageAdapter(val context: Context,
+                      val postItemClick: (Post) -> Unit)
+    : PagedListAdapter<Post,PostPageAdapter.ViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemPostBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -27,16 +26,11 @@ class PostAdapter(val context: Context,
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.itemView.tag=position
-        holder.bind(list[position])
-    }
-
-    override fun getItemCount(): Int {
-        return list.size
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return position
+        val item = getItem(position)
+        if(item!=null) {
+            holder.bind(item)
+            holder.itemView.tag=position
+        }
     }
 
     inner class ViewHolder(val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root){
@@ -50,15 +44,12 @@ class PostAdapter(val context: Context,
             }
         }
     }
+    companion object{
+        val diffUtil = object : DiffUtil.ItemCallback<Post>(){
+            override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem.id==newItem.id
 
-    @JvmName("setList1")
-    fun setList(list:ArrayList<Post>){
-        this.list=list
-        notifyDataSetChanged()
-    }
 
-    fun addItems(items:ArrayList<Post>){
-        this.list.addAll(items)
-        notifyDataSetChanged()
+            override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem==newItem
+        }
     }
 }

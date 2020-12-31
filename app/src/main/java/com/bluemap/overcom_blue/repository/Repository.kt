@@ -14,6 +14,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
+import retrofit2.Response
 
 class Repository(val application: Application) {
     private val retrofit : retrofit2.Retrofit = Retrofit.getInstance()
@@ -70,10 +71,10 @@ class Repository(val application: Application) {
                 .subscribeOn(Schedulers.io())
     }
 
-    fun getPostList():Single<List<Post>> {
-        return bluemapAPI.getPostList((application as BaseApplication).userId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+    fun getPostList(offset:Int):Single<List<Post>> {
+        return bluemapAPI.getPostList((application as BaseApplication).userId,offset)
+                //.observeOn(AndroidSchedulers.mainThread())
+                //.subscribeOn(Schedulers.io())
     }
 
     fun getCenter(lat:Double, lng:Double):Single<List<Center>>{

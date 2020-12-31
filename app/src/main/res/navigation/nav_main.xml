@@ -9,7 +9,7 @@
         android:id="@+id/communityFragment"
         android:name="com.bluemap.overcom_blue.fragment.BoardFragment"
         android:label="fragment_community"
-        tools:layout="@layout/fragment_community" >
+        tools:layout="@layout/fragment_board" >
         <action
             android:id="@+id/action_communityFragment_to_postWriteFragment"
             app:destination="@id/postWriteFragment"

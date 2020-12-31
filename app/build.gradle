@@ -40,6 +40,8 @@ android {
 dependencies {
     def fragment_version = '1.2.0-rc04'
     def nav_version = "2.2.0-rc04"
+    def paging_version = "2.1.2"
+
     //fragment
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
     implementation "androidx.fragment:fragment-testing:$fragment_version"
@@ -80,4 +82,8 @@ dependencies {
 
     //KAKAO
     implementation "com.kakao.sdk:v2-user:2.0.5"
+
+    //Paging
+    implementation "androidx.paging:paging-runtime:$paging_version" // For Kotlin use paging-runtime-ktx
+    implementation "androidx.paging:paging-rxjava2:$paging_version" // For Kotlin use paging-rxjava2-ktx
 }

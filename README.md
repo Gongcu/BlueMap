@@ -23,8 +23,8 @@
 ### STACK🛠
 - Kotlin
 - RxJava
-- Data binding
-- Navigation Component
+- Jetpack(Paging, Data binding, Navigation)
+- Glide
 - Retrofit
 - Naver Maps(Dynamic Mobile Map)
 - API 서버: Node.js, MySQL, Toast Cloud

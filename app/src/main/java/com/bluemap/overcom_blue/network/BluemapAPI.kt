@@ -7,13 +7,14 @@ import com.bluemap.overcom_blue.model.User
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface BluemapAPI {
     @GET("post/{userId}")
     fun getPostList(
-        //@Query("offset") offset:Int,
-        @Path("userId") userId:Int
+        @Path("userId") userId:Int,
+        @Query("offset") offset:Int
     ) : Single<List<Post>>
 
     /*
