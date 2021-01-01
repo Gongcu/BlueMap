@@ -26,11 +26,12 @@
                 android:id="@+id/title_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
                 android:hint="제목."
                 android:text="@{model.title}"
                 android:textColor="@color/textColor"
                 android:textSize="16dp"
+                android:fontFamily="@font/godo_m"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -38,7 +39,7 @@
                 android:id="@+id/left_linear_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -54,14 +55,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:fontFamily="@font/godo_m"
                     android:text="@{model.name}"
                     android:textSize="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:fontFamily="@font/kopub_dotum_light"
+                    android:layout_marginEnd="4dp"
+                    android:fontFamily="@font/godo_m"
                     android:text="|"
                     android:textSize="10dp"/>
 
@@ -69,8 +71,8 @@
                     android:id="@+id/datetime_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:fontFamily="@font/kopub_dotum_light"
+                    android:layout_marginEnd="4dp"
+                    android:fontFamily="@font/godo_m"
                     android:hint="2020.11.23"
                     android:text="@{model.createdAt.substring(0,10)}"
                     android:textSize="10dp"/>
@@ -78,8 +80,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:fontFamily="@font/kopub_dotum_light"
+                    android:layout_marginEnd="4dp"
+                    android:fontFamily="@font/godo_m"
                     android:text="|"
                     android:textSize="10dp"/>
 
@@ -87,8 +89,8 @@
                     android:id="@+id/view_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:fontFamily="@font/kopub_dotum_light"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/godo_m"
                     android:text="조회"
                     android:textSize="10dp"/>
 
@@ -96,8 +98,8 @@
                     android:id="@+id/view_count_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:fontFamily="@font/kopub_dotum_light"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/godo_m"
                     android:hint="15"
                     android:text="@{String.valueOf(model.viewCount)}"
                     android:textSize="10dp"/>
@@ -114,7 +116,7 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/like_image_view"
-                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="4dp"
                     android:layout_width="13dp"
                     android:layout_height="13dp"
                     android:tint="@color/deepGray"
@@ -124,7 +126,8 @@
                     android:id="@+id/like_count_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:fontFamily="@font/godo_m"
                     android:hint="19"
                     android:text="@{String.valueOf(model.likeCount)}"
                     android:textColor="@color/gray"
@@ -135,7 +138,7 @@
                     android:id="@+id/comment_text_view"
                     android:layout_width="13dp"
                     android:layout_height="13dp"
-                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="4dp"
                     android:tint="@color/deepGray"
                     app:srcCompat="@drawable/ic_baseline_chat_bubble_outline_24"/>
 
@@ -143,7 +146,8 @@
                     android:id="@+id/comment_count_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:fontFamily="@font/godo_m"
                     android:hint="19"
                     android:text="@{String.valueOf(model.commentCount)}"
                     android:textColor="@color/gray"

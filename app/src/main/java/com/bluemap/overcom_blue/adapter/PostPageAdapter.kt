@@ -3,6 +3,7 @@ package com.bluemap.overcom_blue.adapter
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.paging.PagedListAdapter
@@ -33,21 +34,32 @@ class PostPageAdapter(val context: Context,
         }
     }
 
-    inner class ViewHolder(val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root){
+
+    override fun getItemViewType(position: Int): Int {
+        return getItem(position).hashCode()
+    }
+
+    inner class ViewHolder(val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
+        init{
+            binding.root.setOnClickListener(this)
+        }
+
         fun bind(model: Post) {
             binding.model = model
-            binding.root.setOnClickListener{
-                postItemClick(model)
-            }
             if(model.like!! == 1){
                 binding.root.like_image_view.setColorFilter(ContextCompat.getColor(context, R.color.deepBlue), android.graphics.PorterDuff.Mode.SRC_IN)
+            }else{
+                binding.root.like_image_view.setColorFilter(ContextCompat.getColor(context, R.color.deepGray), android.graphics.PorterDuff.Mode.SRC_IN)
             }
+        }
+
+        override fun onClick(v: View?) {
+            postItemClick(getItem(adapterPosition)!!)
         }
     }
     companion object{
         val diffUtil = object : DiffUtil.ItemCallback<Post>(){
             override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem.id==newItem.id
-
 
             override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem==newItem
         }

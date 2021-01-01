@@ -12,11 +12,14 @@ import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.util.Util
 import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.user.UserApi
 import com.kakao.sdk.user.UserApiClient
+import io.reactivex.disposables.CompositeDisposable
 
 class SplashActivity : AppCompatActivity() {
     private lateinit var repository : Repository
+    private val compositeDisposable = CompositeDisposable()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
@@ -38,6 +41,11 @@ class SplashActivity : AppCompatActivity() {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
+    }
+
     val callback:(OAuthToken?,Throwable?) -> Unit = { token, error ->
         if (error != null) {
             Log.e("LOGIN_ERORR", error.message)
@@ -49,7 +57,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun findOrCreateUser(kakaoId: Int){
-        repository.postUser(User(kakaoId)) //kakaoId
+        val disposable = repository.postUser(User(kakaoId)) //kakaoId
             .subscribe({
                 BaseApplication.instance!!.userId = it.id!!
                 if (it.name!!.isBlank())
@@ -59,6 +67,7 @@ class SplashActivity : AppCompatActivity() {
             }, {
                 Log.d("LOGIN_ACTIVITY", it.toString())
             })
+        compositeDisposable.add(disposable)
     }
 
     private fun startMainActivity(user: User){

@@ -13,8 +13,8 @@ import kotlinx.android.synthetic.main.fragment_result.*
 import kotlinx.android.synthetic.main.fragment_result.view.*
 
 class ResultFragment : Fragment() {
-    val resultArgs by navArgs<ResultFragmentArgs>()
-    val array:Array<String> = arrayOf(
+    private val resultArgs by navArgs<ResultFragmentArgs>()
+    private val array:Array<String> = arrayOf(
             "검사 결과 현재 우울하지 않은 상태입니다.",
             "검사 결과 현재 가벼운 우울 증세가 있는 상태입니다. 증세가 악화되기 전에 주변 정신 건간 증진 센터에 방문하는 것도 좋은 방법입니다.",
             "검사 결과 현재 중증도의 우울 증세가 있는 상태입니다. 증세가 더 악화되기 전에 주변 정신 건간 증진 센터 방문을 권고드립니다.",
@@ -35,7 +35,7 @@ class ResultFragment : Fragment() {
             in 0..9 -> result_text_view.text=array[0]
             in 10..15 -> result_text_view.text=array[1]
             in 16..23 -> result_text_view.text=array[2]
-            in 24..63 -> result_text_view.text=array[3]
+            in 24..100 -> result_text_view.text=array[3]
         }
         view.move_map_btn.setOnClickListener {
             val direction: NavDirections =

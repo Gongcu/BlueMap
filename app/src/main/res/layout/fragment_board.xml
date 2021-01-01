@@ -9,7 +9,7 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_view"
         android:text="Blue map"
-        android:fontFamily="@font/kopub_dotum_light"
+        android:fontFamily="@font/godo_m"
         android:textSize="20dp"
         android:textStyle="bold"
         android:textColor="@color/white"

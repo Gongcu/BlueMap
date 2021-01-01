@@ -22,6 +22,7 @@ import com.bluemap.overcom_blue.model.Comment
 import com.bluemap.overcom_blue.util.Util
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_post.*
 
@@ -32,6 +33,8 @@ class PostFragment : Fragment() {
     lateinit var repository: Repository
     lateinit var adapter: CommentAdapter
     lateinit var binding: FragmentPostBinding
+
+    private val compositeDisposable = CompositeDisposable()
 
     private val args:PostFragmentArgs by navArgs<PostFragmentArgs>()
     private val imm: InputMethodManager by lazy{
@@ -70,6 +73,11 @@ class PostFragment : Fragment() {
         setComment(repository.getComment(postId))
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
+    }
+
 
     fun back(){
         val directions = NavMainDirections.actionGlobalCommunityFragment()
@@ -77,8 +85,7 @@ class PostFragment : Fragment() {
     }
 
     private fun setComment(observable: Single<List<Comment>>) {
-        observable
-                .doOnSubscribe {
+        val disposable =observable.doOnSubscribe {
                     Util.progressOnInFragment(this)
                 }
                 .doFinally {
@@ -89,10 +96,11 @@ class PostFragment : Fragment() {
                 }, {
                     Log.d(TAG, it.message)
                 })
+        compositeDisposable.add(disposable)
     }
 
     private fun setPost(postId: Int) {
-        repository.getPostById(postId)
+        val disposable = repository.getPostById(postId)
                 .subscribe({
                     if (it.like == 1)
                         like_btn.setColorFilter(ContextCompat.getColor(requireContext(), R.color.deepBlue), android.graphics.PorterDuff.Mode.SRC_IN)
@@ -100,10 +108,11 @@ class PostFragment : Fragment() {
                 }, {
                     Log.d(TAG, it.message)
                 })
+        compositeDisposable.add(disposable)
     }
 
     fun likePost(postId: Int){
-        repository.likePost(postId)
+        val disposable = repository.likePost(postId)
             .subscribe { it ->
                 if (it) {
                     like_btn.setColorFilter(
@@ -119,10 +128,11 @@ class PostFragment : Fragment() {
                     like_count_text_view.text = (like_count_text_view.text.toString().toInt() - 1).toString()
                 }
             }
+        compositeDisposable.add(disposable)
     }
 
     private fun likeComment(commentId: Int, position: Int) {
-        repository.likeComment(commentId)
+        val disposable = repository.likeComment(commentId)
             .subscribe { it ->
                 if (it) {
                     adapter.list[position].like = 1
@@ -133,6 +143,7 @@ class PostFragment : Fragment() {
                 }
                 adapter.notifyItemChanged(position)
             }
+        compositeDisposable.add(disposable)
     }
 
     fun writeComment(){

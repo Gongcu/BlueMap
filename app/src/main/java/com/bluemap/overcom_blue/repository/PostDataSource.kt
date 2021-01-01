@@ -9,25 +9,27 @@ import com.bluemap.overcom_blue.network.BluemapAPI
 import com.bluemap.overcom_blue.network.Retrofit
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class PostDataSource(
-        private val repository: Repository)
-    : PageKeyedDataSource<Int,Post>() {
+        private val repository: Repository,
+        private val compositeDisposable: CompositeDisposable
+    ) : PageKeyedDataSource<Int,Post>() {
 
     //자체적으로 백그라운드 스레드를 통해 비동기로 가져옴 -> UI 접근 불가
 
-    @SuppressLint("CheckResult")
     override fun loadInitial(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, Post>
     ) {
-        repository.getPostList(0)
+        val disposable = repository.getPostList(0)
                 .subscribe { it ->
                     offset += it.size
                     Log.i(TAG, offset.toString())
                     callback.onResult(it, null,it.size);
                 }
+        compositeDisposable.add(disposable)
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Post>) {
@@ -43,6 +45,7 @@ class PostDataSource(
                     offset += it.size
                     callback.onResult(it, offset)
                 }
+        compositeDisposable.add(disposable)
     }
 
     companion object{

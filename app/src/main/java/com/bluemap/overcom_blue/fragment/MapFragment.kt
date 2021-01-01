@@ -9,28 +9,26 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import com.bluemap.overcom_blue.R
-import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.model.Center
+import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.util.Util
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.*
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.dialog_center_info.view.*
 import kotlinx.android.synthetic.main.fragment_map.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
     private var lat: Double = 37.57
@@ -45,6 +43,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
     private val locationManager by lazy {
         context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
+    var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -75,19 +74,22 @@ class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
         }
 
         //Get Current Location. Then, add markers
-        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,object: LocationListener{
+        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, object : LocationListener {
             override fun onLocationChanged(location: Location?) {
-                if(location!=null){
+                if (location != null) {
                     lat = location.latitude
                     lng = location.longitude
                 }
-                naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(lat,lng)))
-                setCenters(lat,lng)
+                naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(lat, lng)))
+                Log.d("AFSDFA", "changed")
+                setCenters(lat, lng)
             }
+
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
             override fun onProviderEnabled(provider: String?) {}
             override fun onProviderDisabled(provider: String?) {
-                setCenters(lat,lng)
+                Log.d("AFSDFA", "onProviderDisabled")
+                setCenters(lat, lng)
             }
         }, Looper.myLooper())
     }
@@ -118,7 +120,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
         marker.map = naverMap
     }
 
-    private fun makeInfoWindow(infoWindow:InfoWindow) :View{
+    private fun makeInfoWindow(infoWindow: InfoWindow) :View{
         val marker = infoWindow.marker
         val center = centers[marker!!.tag as Int]
         val view = View.inflate(requireContext(), R.layout.dialog_center_info, null)
@@ -134,8 +136,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
         return view
     }
 
-    private fun setCenters(lat:Double,lng:Double){
-        repository.getCenter(lat,lng)
+    private fun setCenters(lat: Double, lng: Double){
+        val disposable = repository.getCenter(lat, lng)
                 .doOnSubscribe {
                     Util.progressOnInFragment(this)
                 }
@@ -147,5 +149,12 @@ class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
                 for (i in centers.indices)
                     addMarker(centers[i].latitude, centers[i].longitude, i)
             }
+        compositeDisposable.add(disposable)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
+    }
+
 }

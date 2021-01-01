@@ -14,6 +14,7 @@ import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.activity.MainActivity
 import com.bluemap.overcom_blue.adapter.PostPageAdapter
 import com.bluemap.overcom_blue.model.Post
+import com.bluemap.overcom_blue.repository.PostDataSource
 import com.bluemap.overcom_blue.repository.PostDataSourceFactory
 import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.util.Util
@@ -39,13 +40,13 @@ class BoardFragment : Fragment() {
             (requireActivity() as MainActivity).main_bottom_navigation.visibility=View.GONE
         }
         repository = Repository(activity!!.application)
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_board, container, false)
     }
 
     override fun onResume() {
         super.onResume()
         (requireActivity() as MainActivity).main_bottom_navigation.visibility=View.VISIBLE
+        adapter.notifyDataSetChanged()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,6 +58,8 @@ class BoardFragment : Fragment() {
     }
 
     private fun init(){
+        recycler_view.setItemViewCacheSize(20)
+
         val config= PagedList.Config.Builder()
                 .setPageSize(20)    //Defines the number of items loaded at once from the DataSource.
                 .setInitialLoadSizeHint(20) //Defines how many items to load when first load occurs. Default = PAGE SIZE * 3
@@ -64,17 +67,17 @@ class BoardFragment : Fragment() {
                 .setEnablePlaceholders(true)    //Pass false to disable null placeholders in PagedLists using this Config.
                 .build()
 
-        val builder = RxPagedListBuilder<Int, Post>(PostDataSourceFactory(repository), config)
+        val builder = RxPagedListBuilder<Int, Post>(PostDataSourceFactory(repository,mDisposable), config)
 
         val pagedItems = builder.buildObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    Log.d("ITEMS", it.size.toString())
                     (recycler_view.adapter as PostPageAdapter).submitList(it)
                 }, {
                     it.stackTrace
                 })
+
         mDisposable.add(pagedItems)
         recycler_view.adapter = adapter
     }
@@ -82,6 +85,7 @@ class BoardFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         mDisposable.clear()
+        PostDataSource.offset = 0
     }
 
     private fun goToWritePostFragment(){

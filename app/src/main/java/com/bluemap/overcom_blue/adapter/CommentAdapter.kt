@@ -3,6 +3,7 @@ package com.bluemap.overcom_blue.adapter
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -65,35 +66,45 @@ class CommentAdapter(val context: Context,
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(private val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class ViewHolder(private val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
+        init {
+            binding.replyCommentBtn.setOnClickListener(this)
+            binding.likeBtn.setOnClickListener(this)
+        }
+
         fun bind(model: Comment){
             binding.root.tag=model.id
             binding.model=model
-            binding.replyCommentBtn.setOnClickListener {
-                commentItemClick(model)
-            }
-            binding.likeBtn.setOnClickListener {
-                commentLikeClick(adapterPosition)
-            }
             if(model.like == 1)
                 binding.likeBtn.setColorFilter(ContextCompat.getColor(context, R.color.deepBlue), android.graphics.PorterDuff.Mode.SRC_IN)
             else
                 binding.likeBtn.setColorFilter(ContextCompat.getColor(context, R.color.deepGray), android.graphics.PorterDuff.Mode.SRC_IN)
         }
+
+        override fun onClick(v: View) {
+            when(v.id) {
+                R.id.reply_comment_btn -> commentItemClick(list[adapterPosition])
+                R.id.like_btn -> commentLikeClick(adapterPosition)
+            }
+        }
     }
 
-    inner class ReplyViewHolder(private val binding: ItemReplyCommentBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class ReplyViewHolder(private val binding: ItemReplyCommentBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
+        init {
+            binding.likeBtn.setOnClickListener(this)
+        }
+
         fun bind(model: Comment){
             binding.root.tag=model.id
             binding.model=model
-            binding.likeBtn.setOnClickListener {
-                Log.d("ASDF",adapterPosition.toString())
-                commentLikeClick(adapterPosition)
-            }
             if(model.like == 1)
                 binding.likeBtn.setColorFilter(ContextCompat.getColor(context, R.color.deepBlue), android.graphics.PorterDuff.Mode.SRC_IN)
             else
                 binding.likeBtn.setColorFilter(ContextCompat.getColor(context, R.color.deepGray), android.graphics.PorterDuff.Mode.SRC_IN)
+        }
+
+        override fun onClick(v: View) {
+            commentLikeClick(adapterPosition)
         }
     }
 

@@ -37,7 +37,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:text="Team.Blue map"
-        android:fontFamily="@font/kopub_dotum_light"
+        android:fontFamily="@font/godo_m"
         android:textColor="@color/deepBlue"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
