@@ -28,7 +28,9 @@
             android:id="@+id/action_diagnosisFragment_to_resultFragment"
             app:destination="@id/resultFragment"
             app:enterAnim="@anim/vertical_enter"
-            app:exitAnim="@anim/vertical_exit" />
+            app:exitAnim="@anim/vertical_exit"
+            app:popUpTo="@id/diagnosisFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/resultFragment"
@@ -58,7 +60,9 @@
     <action
         android:id="@+id/action_global_communityFragment"
         app:destination="@id/communityFragment"
-        app:enterAnim="@anim/horizontal_enter" />
+        app:enterAnim="@anim/horizontal_enter"
+        app:popUpTo="@id/nav_main"
+        app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/postFragment"
         android:name="com.bluemap.overcom_blue.fragment.PostFragment"

@@ -93,4 +93,5 @@ class BoardFragment : Fragment() {
         findNavController().navigate(navDirections)
         (requireActivity() as MainActivity).main_bottom_navigation.visibility=View.GONE
     }
+
 }

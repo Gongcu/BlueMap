@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.bluemap.overcom_blue.application.BaseApplication
 import com.bluemap.overcom_blue.NavMainDirections
@@ -64,6 +65,4 @@ class PostWriteFragment : Fragment() {
         val directions = NavMainDirections.actionGlobalCommunityFragment()
         findNavController().navigate(directions)
     }
-
-
 }
