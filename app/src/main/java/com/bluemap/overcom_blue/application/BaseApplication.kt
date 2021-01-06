@@ -3,6 +3,7 @@ package com.bluemap.overcom_blue.application
 import android.app.Activity
 import android.app.Application
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDialog
 import androidx.fragment.app.Fragment
@@ -62,7 +63,10 @@ class BaseApplication : Application(){
 
 
     fun progressOffInFragment(){
-        if(fragmentDialog!=null && fragmentDialog!!.isResumed) {
+        //Log.i("isAdded",fragmentDialog!!.isAdded.toString())
+        //Log.i("showsDialog",fragmentDialog!!.showsDialog.toString())
+
+        if(fragmentDialog!=null && fragmentDialog!!.isAdded) {
             fragmentDialog!!.dismiss()
         }
     }

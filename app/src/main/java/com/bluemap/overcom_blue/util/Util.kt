@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.widget.BaseExpandableListAdapter
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDialog

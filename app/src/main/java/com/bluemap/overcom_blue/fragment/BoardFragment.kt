@@ -1,6 +1,7 @@
 package com.bluemap.overcom_blue.fragment
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.paging.RxPagedListBuilder
 import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.activity.MainActivity
 import com.bluemap.overcom_blue.adapter.PostPageAdapter
+import com.bluemap.overcom_blue.application.BaseApplication
 import com.bluemap.overcom_blue.model.Post
 import com.bluemap.overcom_blue.repository.PostDataSource
 import com.bluemap.overcom_blue.repository.PostDataSourceFactory
@@ -20,46 +22,56 @@ import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.util.Util
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_board.*
+import kotlinx.android.synthetic.main.fragment_board.view.*
 
 
 class BoardFragment : Fragment() {
     lateinit var repository: Repository
     lateinit var adapter: PostPageAdapter
     private val mDisposable = CompositeDisposable()
+    private lateinit var pagedItems: Disposable
 
-    override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Util.progressOnInFragment(this)
+    }
+
+    //Callback when fragment is created
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         adapter = PostPageAdapter(requireContext()) {
             val directions = BoardFragmentDirections.actionCommunityFragmentToPostFragment(it.id!!)
             findNavController().navigate(directions)
             (requireActivity() as MainActivity).main_bottom_navigation.visibility=View.GONE
         }
         repository = Repository(activity!!.application)
-        return inflater.inflate(R.layout.fragment_board, container, false)
+        initData()
     }
 
-    override fun onResume() {
-        super.onResume()
+    //Callback first init & return from back stack
+    override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_board, container, false)
         (requireActivity() as MainActivity).main_bottom_navigation.visibility=View.VISIBLE
-        adapter.notifyDataSetChanged()
+        view.write_post_btn.setOnClickListener { goToWritePostFragment() }
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        init()
-
-        write_post_btn.setOnClickListener { goToWritePostFragment() }
+        recycler_view.setItemViewCacheSize(20)
+        recycler_view.adapter = adapter
     }
 
-    private fun init(){
-        recycler_view.setItemViewCacheSize(20)
-
+    private fun initData(){
         val config= PagedList.Config.Builder()
                 .setPageSize(20)    //Defines the number of items loaded at once from the DataSource.
                 .setInitialLoadSizeHint(20) //Defines how many items to load when first load occurs. Default = PAGE SIZE * 3
@@ -69,17 +81,16 @@ class BoardFragment : Fragment() {
 
         val builder = RxPagedListBuilder<Int, Post>(PostDataSourceFactory(repository,mDisposable), config)
 
-        val pagedItems = builder.buildObservable()
+        pagedItems = builder.buildObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    (recycler_view.adapter as PostPageAdapter).submitList(it)
+                    adapter.submitList(it)
+                    Util.progressOffInFragment()
                 }, {
                     it.stackTrace
                 })
-
         mDisposable.add(pagedItems)
-        recycler_view.adapter = adapter
     }
 
     override fun onStop() {

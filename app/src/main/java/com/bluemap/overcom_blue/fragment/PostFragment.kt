@@ -28,12 +28,18 @@ import kotlinx.android.synthetic.main.fragment_post.*
 class PostFragment : Fragment() {
     var postId:Int = -1
     var userId:Int = -1
-    lateinit var repository: Repository
-    lateinit var adapter: CommentAdapter
+    private val repository: Repository by lazy {
+        Repository(requireActivity().application)
+    }
+    private val adapter: CommentAdapter by lazy{
+        CommentAdapter(requireContext(), {
+            replyModeOn(it.id!!)
+        }, {
+            likeComment(adapter.list[it].id!!, it)
+        })
+    }
     lateinit var binding: FragmentPostBinding
-
     private val compositeDisposable = CompositeDisposable()
-
     private val args:PostFragmentArgs by navArgs<PostFragmentArgs>()
     private val imm: InputMethodManager by lazy{
         requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -41,17 +47,20 @@ class PostFragment : Fragment() {
 
     var parentCommentId = -1
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        postId = args.postId
+        userId = (requireActivity().application as BaseApplication).userId
+
+        //NETWORKING
+        setPost(postId)
+        setComment(repository.getComment(postId))
+    }
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        repository = Repository(requireActivity().application)
-        adapter = CommentAdapter(requireContext(), {
-            replyModeOn(it.id!!)
-        }, {
-            Log.d("click", adapter.list[it].toString())
-            likeComment(adapter.list[it].id!!, it)
-        })
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate<FragmentPostBinding>(inflater, R.layout.fragment_post, container, false)
         binding.fragment=this@PostFragment
@@ -61,14 +70,7 @@ class PostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        postId = args.postId
-        userId = (requireActivity().application as BaseApplication).userId
-
         recycler_view.adapter = adapter
-
-        setPost(postId)
-
-        setComment(repository.getComment(postId))
     }
 
     override fun onDestroy() {
@@ -77,18 +79,8 @@ class PostFragment : Fragment() {
     }
 
 
-    fun back() = run {
-        val directions = NavMainDirections.actionGlobalCommunityFragment()
-        findNavController().navigate(directions)
-    }
-
     private fun setComment(observable: Single<List<Comment>>) {
-        val disposable =observable.doOnSubscribe {
-                    Util.progressOnInFragment(this)
-                }
-                .doFinally {
-                    Util.progressOffInFragment()
-                }
+        val disposable =observable
                 .subscribe({
                     adapter.setList(ArrayList(it))
                 }, {
@@ -98,7 +90,13 @@ class PostFragment : Fragment() {
     }
 
     private fun setPost(postId: Int) {
-        val disposable = repository.getPostById(postId)
+        val disposable = repository.getPostById(postId).
+                doOnSubscribe {
+                    Util.progressOnInFragment(this)
+                }
+                .doFinally {
+                    Util.progressOffInFragment()
+                }
                 .subscribe({
                     if (it.like == 1)
                         like_btn.setColorFilter(ContextCompat.getColor(requireContext(), R.color.deepBlue), android.graphics.PorterDuff.Mode.SRC_IN)
@@ -107,6 +105,11 @@ class PostFragment : Fragment() {
                     Log.d(TAG, it.message)
                 })
         compositeDisposable.add(disposable)
+    }
+
+    fun back() = run {
+        val directions = NavMainDirections.actionGlobalCommunityFragment()
+        findNavController().navigate(directions)
     }
 
     fun likePost(postId: Int){
