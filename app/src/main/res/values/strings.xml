@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Blue map</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="diagnosisFragment">우울증 자가 진단</string>
     <string name="communityFragment">커뮤니티</string>
     <string name="X_NCP_APIGW_API_KEY_ID">q8blf7q2hp</string>
     <string name="X_NCP_APIGW_API_KEY">TlU8ijRafYqu73eROsfTfntnDY97eb5oSrtMqfJu</string>
+    <string name="kakao_app_key">3c4255d2ecad10b61f53424eba38bada</string>
+
 </resources>

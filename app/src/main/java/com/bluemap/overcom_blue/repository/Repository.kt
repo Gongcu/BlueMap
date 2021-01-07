@@ -73,14 +73,15 @@ class Repository(val application: Application) {
 
     fun getPostList(offset:Int):Single<List<Post>> {
         return bluemapAPI.getPostList((application as BaseApplication).userId,offset)
-                //.observeOn(AndroidSchedulers.mainThread())
-                //.subscribeOn(Schedulers.io())
     }
 
     fun getCenter(lat:Double, lng:Double):Single<List<Center>>{
         return bluemapAPI.getCenter(lat,lng)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+    }
+    fun getCenter(search:String, offset:Int):Single<List<Center>>{
+        return bluemapAPI.getCenterList(search,offset)
     }
 
     fun likePost(postId: Int):Single<Boolean>{

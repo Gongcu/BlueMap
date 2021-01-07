@@ -51,7 +51,16 @@
         android:id="@+id/mapFragment"
         android:name="com.bluemap.overcom_blue.fragment.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_mapFragment_to_centerSearchFragment"
+            app:destination="@id/centerSearchFragment" />
+        <argument
+            android:name="center"
+            app:argType="com.bluemap.overcom_blue.model.Center"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/postWriteFragment"
         android:name="com.bluemap.overcom_blue.fragment.PostWriteFragment"
@@ -71,5 +80,14 @@
         <argument
             android:name="postId"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/centerSearchFragment"
+        android:name="com.bluemap.overcom_blue.fragment.CenterSearchFragment"
+        android:label="fragment_center_search"
+        tools:layout="@layout/fragment_center_search" >
+        <action
+            android:id="@+id/action_centerSearchFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
 </navigation>

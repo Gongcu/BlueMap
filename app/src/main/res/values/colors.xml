@@ -13,6 +13,9 @@
     <color name="lightGray">#BCD5D5D5</color>
     <color name="white">#FFFFFFFF</color>
     <color name="deepBlue">#202C6A</color>
+    <color name="lightBlue">#6982FF</color>
+    <color name="blue">#4964EB</color>
+    <color name="yellow">#EBC349</color>
     <color name="loadingTransparent">#85000000</color>
 
 </resources>

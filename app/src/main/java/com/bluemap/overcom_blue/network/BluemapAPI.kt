@@ -17,6 +17,12 @@ interface BluemapAPI {
         @Query("offset") offset:Int
     ) : Single<List<Post>>
 
+    @GET("center/{search}")
+    fun getCenterList(
+        @Path("search") search:String,
+        @Query("offset") offset:Int
+    ) : Single<List<Center>>
+
     /*
     @GET("post/exercise/{exercise}/hot")
     fun getHotPostList(@Path("exercise") exercise:String) : Call<List<GuideItem>>

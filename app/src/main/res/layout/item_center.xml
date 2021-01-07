@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="model"
+            type="com.bluemap.overcom_blue.model.Center" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        app:strokeColor="@color/lightGray"
+        app:strokeWidth="1dp"
+        app:cardCornerRadius="3dp"
+        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/title_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:hint="제목"
+                android:text="@{model.agencyName}"
+                android:textColor="@color/textColor"
+                android:textSize="16dp"
+                android:fontFamily="@font/godo_m"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/specification_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:hint="제목"
+                android:text="@{model.agencyName}"
+                android:textColor="@color/textColor"
+                android:textSize="10dp"
+                android:fontFamily="@font/godo_m"
+                android:layout_marginTop="7dp"
+                app:layout_constraintLeft_toRightOf="@+id/title_text_view"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/homepage_text_view"
+                android:text="www.hompage.com"
+                android:linksClickable="true"
+                android:autoLink="web"
+                android:fontFamily="@font/godo_m"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="4dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title_text_view"/>
+
+            <LinearLayout
+                android:id="@+id/linear_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/homepage_text_view">
+
+                <TextView
+                    android:id="@+id/name_text_view"
+                    android:hint="서울시 강남구"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:fontFamily="@font/godo_m"
+                    android:text="@{model.address}"
+                    android:textColor="@color/textColor"
+                    android:textSize="13dp" />
+
+                <TextView
+                    android:id="@+id/datetime_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/godo_m"
+                    android:hint="5층"
+                    android:textColor="@color/textColor"
+                    android:text="@{model.specificAddress}"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/phone_text_view"
+                android:text="@{model.phone}"
+                android:hint="010-1111-1111"
+                android:textColor="@color/blue"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/godo_m"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</layout>

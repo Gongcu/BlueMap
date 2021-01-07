@@ -107,11 +107,11 @@ class DiagnosisAdapter(
                     sum+=list[i].point
                 }
             }
-            if(complete){
+            //if(complete){
                 val direction: NavDirections =
                         DiagnosisFragmentDirections.actionDiagnosisFragmentToResultFragment(sum)
                 fragment.findNavController().navigate(direction)
-            }
+            //}
         }
     }
 }

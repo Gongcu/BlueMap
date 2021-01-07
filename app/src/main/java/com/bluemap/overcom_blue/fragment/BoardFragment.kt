@@ -34,7 +34,13 @@ class BoardFragment : Fragment() {
     lateinit var adapter: PostPageAdapter
     private val mDisposable = CompositeDisposable()
     private lateinit var pagedItems: Disposable
-
+    private lateinit var builder:RxPagedListBuilder<Int,Post>
+    private val config= PagedList.Config.Builder()
+        .setPageSize(20)    //Defines the number of items loaded at once from the DataSource.
+        .setInitialLoadSizeHint(20) //Defines how many items to load when first load occurs. Default = PAGE SIZE * 3
+        .setPrefetchDistance(20)    //Defines how far from the edge of loaded content an access must be to trigger further loading.
+        .setEnablePlaceholders(true)    //Pass false to disable null placeholders in PagedLists using this Config.
+        .build()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,12 +50,14 @@ class BoardFragment : Fragment() {
     //Callback when fragment is created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         adapter = PostPageAdapter(requireContext()) {
             val directions = BoardFragmentDirections.actionCommunityFragmentToPostFragment(it.id!!)
             findNavController().navigate(directions)
             (requireActivity() as MainActivity).main_bottom_navigation.visibility=View.GONE
         }
-        repository = Repository(activity!!.application)
+        repository = Repository(requireActivity().application)
+        builder = RxPagedListBuilder<Int, Post>(PostDataSourceFactory(repository,mDisposable), config)
         initData()
     }
 
@@ -72,15 +80,6 @@ class BoardFragment : Fragment() {
     }
 
     private fun initData(){
-        val config= PagedList.Config.Builder()
-                .setPageSize(20)    //Defines the number of items loaded at once from the DataSource.
-                .setInitialLoadSizeHint(20) //Defines how many items to load when first load occurs. Default = PAGE SIZE * 3
-                .setPrefetchDistance(20)    //Defines how far from the edge of loaded content an access must be to trigger further loading.
-                .setEnablePlaceholders(true)    //Pass false to disable null placeholders in PagedLists using this Config.
-                .build()
-
-        val builder = RxPagedListBuilder<Int, Post>(PostDataSourceFactory(repository,mDisposable), config)
-
         pagedItems = builder.buildObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
