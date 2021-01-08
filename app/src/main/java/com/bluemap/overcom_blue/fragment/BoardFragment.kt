@@ -42,15 +42,10 @@ class BoardFragment : Fragment() {
         .setEnablePlaceholders(true)    //Pass false to disable null placeholders in PagedLists using this Config.
         .build()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Util.progressOnInFragment(this)
-    }
 
     //Callback when fragment is created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         adapter = PostPageAdapter(requireContext()) {
             val directions = BoardFragmentDirections.actionCommunityFragmentToPostFragment(it.id!!)
             findNavController().navigate(directions)
@@ -69,7 +64,7 @@ class BoardFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_board, container, false)
         (requireActivity() as MainActivity).main_bottom_navigation.visibility=View.VISIBLE
         view.write_post_btn.setOnClickListener { goToWritePostFragment() }
-
+        view.swipe_refresh_layout.setOnRefreshListener { initData() }
         return view
     }
 
@@ -79,15 +74,22 @@ class BoardFragment : Fragment() {
         recycler_view.adapter = adapter
     }
 
+
     private fun initData(){
         pagedItems = builder.buildObservable()
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    Util.progressOnInFragment(this)
+                }
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     adapter.submitList(it)
                     Util.progressOffInFragment()
+                    swipe_refresh_layout.isRefreshing=false
                 }, {
                     it.stackTrace
+                    Util.progressOffInFragment()
+                    swipe_refresh_layout.isRefreshing=false
                 })
         mDisposable.add(pagedItems)
     }
@@ -103,5 +105,4 @@ class BoardFragment : Fragment() {
         findNavController().navigate(navDirections)
         (requireActivity() as MainActivity).main_bottom_navigation.visibility=View.GONE
     }
-
 }

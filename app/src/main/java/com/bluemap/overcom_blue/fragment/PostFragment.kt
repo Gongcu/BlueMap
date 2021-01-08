@@ -108,8 +108,7 @@ class PostFragment : Fragment() {
     }
 
     fun back() = run {
-        val directions = NavMainDirections.actionGlobalCommunityFragment()
-        findNavController().navigate(directions)
+        requireActivity().onBackPressed()
     }
 
     fun likePost(postId: Int){

@@ -62,7 +62,6 @@ class PostWriteFragment : Fragment() {
 
 
     fun backToBoard() = run {
-        val directions = NavMainDirections.actionGlobalCommunityFragment()
-        findNavController().navigate(directions)
+        requireActivity().onBackPressed()
     }
 }
