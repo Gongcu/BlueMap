@@ -2,6 +2,7 @@ package com.bluemap.overcom_blue.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -52,7 +53,7 @@ class CenterSearchFragment : Fragment() {
             val directions = CenterSearchFragmentDirections.actionCenterSearchFragmentToMapFragment(it)
             findNavController().navigate(directions)
         }
-
+        Log.d("CENTER_SEARCH","onCreate")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -66,13 +67,14 @@ class CenterSearchFragment : Fragment() {
                 search()
             }
         }
-        imm.showSoftInput(search_edit_text_view, InputMethodManager.SHOW_IMPLICIT)
+        Log.d("CENTER_SEARCH","onCreateView")
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler_view.adapter = adapter
+        imm.showSoftInput(search_edit_text_view, InputMethodManager.SHOW_IMPLICIT)
         //강서
     }
 

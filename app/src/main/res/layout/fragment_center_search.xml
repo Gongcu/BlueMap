@@ -19,9 +19,13 @@
         android:layout_height="wrap_content">
         <EditText
             android:id="@+id/search_edit_text_view"
-            android:hint="현재 위치"
+            android:hint="위치, 센터명으로 검색"
+            android:fontFamily="@font/godo_m"
             android:background="@null"
+            android:textCursorDrawable="@drawable/shape_cursor"
+            android:maxLength="20"
             android:textColor="@color/textColor"
+            android:paddingStart="5dp"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_width="0dp"

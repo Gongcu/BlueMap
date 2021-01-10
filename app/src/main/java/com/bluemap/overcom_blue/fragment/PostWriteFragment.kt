@@ -1,11 +1,13 @@
 package com.bluemap.overcom_blue.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavOptions
@@ -19,8 +21,7 @@ import com.bluemap.overcom_blue.model.Post
 import com.bluemap.overcom_blue.util.Util
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_post.back_btn
-import kotlinx.android.synthetic.main.fragment_post.back_text_view
+import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.fragment_post_write.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,11 +30,14 @@ import retrofit2.Response
 class PostWriteFragment : Fragment() {
     private lateinit var repository : Repository
     private lateinit var binding: FragmentPostWriteBinding
+    private val imm: InputMethodManager by lazy{
+        requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         repository = Repository(activity!!.application)
         binding = DataBindingUtil.inflate<FragmentPostWriteBinding>(inflater,R.layout.fragment_post_write,container,false)
         binding.fragment = this@PostWriteFragment
@@ -60,8 +64,9 @@ class PostWriteFragment : Fragment() {
         }
     }
 
-
     fun backToBoard() = run {
+        imm.hideSoftInputFromWindow(title_edit_text_view.windowToken, 0)
+        imm.hideSoftInputFromWindow(content_edit_text_view.windowToken, 0)
         requireActivity().onBackPressed()
     }
 }

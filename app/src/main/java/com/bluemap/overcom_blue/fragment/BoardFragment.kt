@@ -84,12 +84,14 @@ class BoardFragment : Fragment() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     adapter.submitList(it)
+                    //That means that doFinally it will be called anyway, and it is not warranted that you have a valid context.
+                    //I do not use doFinally for this things. I set the loading(false) onNext or onError always. Not pretty but effective.
                     Util.progressOffInFragment()
-                    swipe_refresh_layout.isRefreshing=false
+                    swipe_refresh_layout?.isRefreshing=false
                 }, {
                     it.stackTrace
                     Util.progressOffInFragment()
-                    swipe_refresh_layout.isRefreshing=false
+                    swipe_refresh_layout?.isRefreshing=false
                 })
         mDisposable.add(pagedItems)
     }

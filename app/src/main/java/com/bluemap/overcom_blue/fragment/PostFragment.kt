@@ -61,7 +61,6 @@ class PostFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate<FragmentPostBinding>(inflater, R.layout.fragment_post, container, false)
         binding.fragment=this@PostFragment
         return binding.root
@@ -108,6 +107,7 @@ class PostFragment : Fragment() {
     }
 
     fun back() = run {
+        imm.hideSoftInputFromWindow(comment_edit_text.windowToken, 0)
         requireActivity().onBackPressed()
     }
 

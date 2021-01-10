@@ -27,7 +27,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:hint="제목."
                 android:text="@{model.title}"
                 android:textColor="@color/textColor"
                 android:textSize="16dp"
@@ -62,7 +61,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
+                    android:layout_marginHorizontal="2dp"
                     android:fontFamily="@font/godo_m"
                     android:text="|"
                     android:textSize="10dp"/>
@@ -71,16 +70,14 @@
                     android:id="@+id/datetime_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
                     android:fontFamily="@font/godo_m"
-                    android:hint="2020.11.23"
                     android:text="@{model.createdAt.substring(0,10)}"
                     android:textSize="10dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
+                    android:layout_marginHorizontal="2dp"
                     android:fontFamily="@font/godo_m"
                     android:text="|"
                     android:textSize="10dp"/>
@@ -89,7 +86,7 @@
                     android:id="@+id/view_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="2dp"
                     android:fontFamily="@font/godo_m"
                     android:text="조회"
                     android:textSize="10dp"/>
@@ -100,7 +97,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:fontFamily="@font/godo_m"
-                    android:hint="15"
                     android:text="@{String.valueOf(model.viewCount)}"
                     android:textSize="10dp"/>
 
@@ -128,7 +124,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
                     android:fontFamily="@font/godo_m"
-                    android:hint="19"
                     android:text="@{String.valueOf(model.likeCount)}"
                     android:textColor="@color/gray"
                     android:textSize="10dp"
@@ -148,7 +143,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
                     android:fontFamily="@font/godo_m"
-                    android:hint="19"
                     android:text="@{String.valueOf(model.commentCount)}"
                     android:textColor="@color/gray"
                     android:textSize="10dp"/>
