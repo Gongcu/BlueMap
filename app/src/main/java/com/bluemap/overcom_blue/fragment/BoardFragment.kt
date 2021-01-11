@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
@@ -20,6 +21,8 @@ import com.bluemap.overcom_blue.repository.PostDataSource
 import com.bluemap.overcom_blue.repository.PostDataSourceFactory
 import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.util.Util
+import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -27,12 +30,16 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_board.*
 import kotlinx.android.synthetic.main.fragment_board.view.*
+import kotlinx.android.synthetic.main.item_notice.view.view_count_text_view
+import kotlinx.android.synthetic.main.item_post.view.*
 
 
 class BoardFragment : Fragment() {
+    private var post : Post? = null
     lateinit var repository: Repository
     lateinit var adapter: PostPageAdapter
     private val mDisposable = CompositeDisposable()
+    private lateinit var noticeObservable : Single<Post>
     private lateinit var pagedItems: Disposable
     private lateinit var builder:RxPagedListBuilder<Int,Post>
     private val config= PagedList.Config.Builder()
@@ -47,11 +54,10 @@ class BoardFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = PostPageAdapter(requireContext()) {
-            val directions = BoardFragmentDirections.actionCommunityFragmentToPostFragment(it.id!!)
-            findNavController().navigate(directions)
-            (requireActivity() as MainActivity).main_bottom_navigation.visibility=View.GONE
+            goToPostFragment(it)
         }
         repository = Repository(requireActivity().application)
+        noticeObservable = repository.getNotice()
         builder = RxPagedListBuilder<Int, Post>(PostDataSourceFactory(repository,mDisposable), config)
         initData()
     }
@@ -64,7 +70,12 @@ class BoardFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_board, container, false)
         (requireActivity() as MainActivity).main_bottom_navigation.visibility=View.VISIBLE
         view.write_post_btn.setOnClickListener { goToWritePostFragment() }
-        view.swipe_refresh_layout.setOnRefreshListener { initData() }
+        view.swipe_refresh_layout.setOnRefreshListener {
+            post = null
+            initData()
+            bindNotice(view)
+        }
+        bindNotice(view)
         return view
     }
 
@@ -76,6 +87,7 @@ class BoardFragment : Fragment() {
 
 
     private fun initData(){
+        swipe_refresh_layout?.isRefreshing=false //Using another progress bar so the refresh progress bar not required
         pagedItems = builder.buildObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
@@ -87,13 +99,12 @@ class BoardFragment : Fragment() {
                     //That means that doFinally it will be called anyway, and it is not warranted that you have a valid context.
                     //I do not use doFinally for this things. I set the loading(false) onNext or onError always. Not pretty but effective.
                     Util.progressOffInFragment()
-                    swipe_refresh_layout?.isRefreshing=false
                 }, {
                     it.stackTrace
                     Util.progressOffInFragment()
-                    swipe_refresh_layout?.isRefreshing=false
                 })
         mDisposable.add(pagedItems)
+
     }
 
     override fun onStop() {
@@ -105,6 +116,39 @@ class BoardFragment : Fragment() {
     private fun goToWritePostFragment(){
         val navDirections = BoardFragmentDirections.actionCommunityFragmentToPostWriteFragment()
         findNavController().navigate(navDirections)
+        (requireActivity() as MainActivity).main_bottom_navigation.visibility=View.GONE
+    }
+
+
+    private fun bindNotice(view:View){
+        if(post==null){
+            val disposable = noticeObservable.subscribe(
+                    { post ->
+                        this.post = post
+                        bindNoticeView(view)
+                    }, {
+                it.stackTrace
+            })
+            mDisposable.add(disposable)
+        }else{
+            bindNoticeView(view)
+        }
+    }
+
+    private fun bindNoticeView(view:View){
+        view.notice_layout.like_count_text_view.text = post!!.likeCount.toString()
+        view.notice_layout.comment_count_text_view.text = post!!.commentCount.toString()
+        view.notice_layout.view_count_text_view.text = post!!.viewCount.toString()
+        if (post!!.like!! == 1)
+            view.notice_layout.like_image_view.setColorFilter(ContextCompat.getColor(requireContext(), R.color.deepBlue), android.graphics.PorterDuff.Mode.SRC_IN)
+        view.notice_layout.setOnClickListener {
+            goToPostFragment(post!!)
+        }
+    }
+    
+    private fun goToPostFragment(post:Post){
+        val directions = BoardFragmentDirections.actionCommunityFragmentToPostFragment(post.id!!)
+        findNavController().navigate(directions)
         (requireActivity() as MainActivity).main_bottom_navigation.visibility=View.GONE
     }
 }

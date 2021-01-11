@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.databinding.ItemCenterBinding
+import com.bluemap.overcom_blue.databinding.ItemNoticeBinding
 import com.bluemap.overcom_blue.databinding.ItemPostBinding
 import com.bluemap.overcom_blue.model.Center
 import com.bluemap.overcom_blue.model.Post
@@ -55,6 +56,8 @@ class CenterPageAdapter(val context: Context,
             centerItemClick(getItem(adapterPosition)!!)
         }
     }
+
+
     companion object{
         val diffUtil = object : DiffUtil.ItemCallback<Center>(){
             override fun areItemsTheSame(oldItem: Center, newItem: Center): Boolean = oldItem.id==newItem.id

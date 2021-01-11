@@ -71,6 +71,12 @@ class Repository(val application: Application) {
                 .subscribeOn(Schedulers.io())
     }
 
+    fun getNotice():Single<Post> {
+        return bluemapAPI.getNotice((application as BaseApplication).userId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+    }
+
     fun getPostList(offset:Int):Single<List<Post>> {
         return bluemapAPI.getPostList((application as BaseApplication).userId,offset)
     }

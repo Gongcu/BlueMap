@@ -10,7 +10,9 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bluemap.overcom_blue.R
+import com.bluemap.overcom_blue.databinding.ItemNoticeBinding
 import com.bluemap.overcom_blue.databinding.ItemPostBinding
+import com.bluemap.overcom_blue.model.Center
 import com.bluemap.overcom_blue.model.Post
 import kotlinx.android.synthetic.main.item_post.view.*
 
@@ -57,6 +59,26 @@ class PostPageAdapter(val context: Context,
             postItemClick(getItem(adapterPosition)!!)
         }
     }
+
+    inner class NoticeViewHolder(val binding: ItemNoticeBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
+        init{
+            binding.root.setOnClickListener(this)
+        }
+
+        fun bind(model: Post) {
+            binding.model = model
+            if(model.like!! == 1){
+                binding.root.like_image_view.setColorFilter(ContextCompat.getColor(context, R.color.deepBlue), android.graphics.PorterDuff.Mode.SRC_IN)
+            }else{
+                binding.root.like_image_view.setColorFilter(ContextCompat.getColor(context, R.color.deepGray), android.graphics.PorterDuff.Mode.SRC_IN)
+            }
+        }
+
+        override fun onClick(v: View?) {
+            postItemClick(getItem(adapterPosition)!!)
+        }
+    }
+
     companion object{
         val diffUtil = object : DiffUtil.ItemCallback<Post>(){
             override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem.id==newItem.id
