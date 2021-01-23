@@ -9,7 +9,7 @@ object Retrofit{
     fun getInstance():Retrofit{
         if(instance ==null){
             instance = Retrofit.Builder()
-                    .baseUrl("https://www.bluemap.site/")
+                    .baseUrl("https://bluemap.site/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build()
