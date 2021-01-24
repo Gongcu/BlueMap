@@ -27,7 +27,7 @@
 - Glide
 - Retrofit
 - Naver Maps(Dynamic Mobile Map)
-- API 서버: Node.js, MySQL, Toast Cloud
+- API 서버: Node.js, MySQL, AWS EC2, Nginx, HTTPS
 
-[시연영상](https://www.youtube.com/watch?v=zXRzkeUgGnc&ab_channel=%EA%B3%B5%EC%B1%84%EC%9A%B4)
-
+### 시연영상🎞
+<img src='ezgif.com-gif-maker.gif' width="70%" height="70%">
