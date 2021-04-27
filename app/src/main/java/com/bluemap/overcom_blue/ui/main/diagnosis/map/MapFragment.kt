@@ -1,4 +1,4 @@
-package com.bluemap.overcom_blue.fragment
+package com.bluemap.overcom_blue.ui.main.diagnosis.map
 
 import android.Manifest
 import android.content.Context
@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bluemap.overcom_blue.R
+import com.bluemap.overcom_blue.fragment.MapFragmentArgs
+import com.bluemap.overcom_blue.fragment.MapFragmentDirections
 import com.bluemap.overcom_blue.model.Center
 import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.util.Util
@@ -30,14 +32,19 @@ import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.dialog_center_info.view.*
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.fragment_map.view.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
     private var lat: Double = 37.57
     private var lng: Double = 126.97
+
+    @Inject
     lateinit var repository: Repository
     lateinit var centers: List<Center>
     lateinit var naverMap: NaverMap
@@ -46,7 +53,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
         OverlayImage.fromResource(R.drawable.ic_baseline_place_24)
     }
     private val locationManager by lazy {
-        context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
     var compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val args by navArgs<MapFragmentArgs>()
@@ -55,7 +62,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        repository = Repository(activity!!.application)
 
         if(args.center != null)
             INIT_TYPE = SEARCH
@@ -65,7 +71,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
             locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) -> LOCATION_SERVICE = NETWORK
         }
 
-        infoWindow.adapter = object : InfoWindow.DefaultViewAdapter(context!!) {
+        infoWindow.adapter = object : InfoWindow.DefaultViewAdapter(requireContext()) {
             override fun getContentView(infowindow: InfoWindow): View {
                 return makeInfoWindow(infoWindow)
             }

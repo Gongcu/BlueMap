@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.OvercomeBlue">
-        <activity android:name=".activity.SetUserActivity"></activity>
+        <activity android:name=".ui.registration.RegistrationActivity"></activity>
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
@@ -25,7 +25,7 @@
             android:value="@string/kakao_app_key" />
 
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".ui.splash.SplashActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity"/>
+        <activity android:name=".ui.main.MainActivity"/>
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

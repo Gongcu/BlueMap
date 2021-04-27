@@ -1,6 +1,5 @@
 package com.bluemap.overcom_blue.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +12,14 @@ import com.bluemap.overcom_blue.model.DiagnosisModel
 import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.databinding.ItemCompleteBinding
 import com.bluemap.overcom_blue.databinding.ItemDiagnosisBinding
-import com.bluemap.overcom_blue.fragment.DiagnosisFragment
+import com.bluemap.overcom_blue.ui.main.diagnosis.diagnosis.DiagnosisFragment
 import com.bluemap.overcom_blue.fragment.DiagnosisFragmentDirections
 import kotlinx.android.synthetic.main.item_diagnosis.view.*
 
 class DiagnosisAdapter(
         val list: ArrayList<DiagnosisModel>,
-        private val fragment: DiagnosisFragment)
+        private val fragment: DiagnosisFragment
+)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if(viewType == R.layout.item_complete){

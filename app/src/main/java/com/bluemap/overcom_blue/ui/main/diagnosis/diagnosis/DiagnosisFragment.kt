@@ -1,4 +1,4 @@
-package com.bluemap.overcom_blue.fragment
+package com.bluemap.overcom_blue.ui.main.diagnosis.diagnosis
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

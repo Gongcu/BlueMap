@@ -2,6 +2,7 @@ package com.bluemap.overcom_blue.util
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
@@ -71,10 +72,15 @@ object Util {
         BaseApplication.instance?.progressOffInFragment()
     }
 
+    /*
     fun progressOn(activity: FragmentActivity){
         BaseApplication.instance?.progressOn(activity)
-    }
+    }*/
     fun progressOff(){
         BaseApplication.instance?.progressOff()
+    }
+
+    fun progressOn(context: Context){
+        BaseApplication.instance?.progressOn(context)
     }
 }

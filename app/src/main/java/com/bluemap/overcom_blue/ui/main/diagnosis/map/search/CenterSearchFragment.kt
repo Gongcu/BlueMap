@@ -1,4 +1,4 @@
-package com.bluemap.overcom_blue.fragment
+package com.bluemap.overcom_blue.ui.main.diagnosis.map.search
 
 import android.content.Context
 import android.os.Bundle
@@ -9,29 +9,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.navigation.fragment.findNavController
-import androidx.paging.DataSource
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.adapter.CenterPageAdapter
+import com.bluemap.overcom_blue.fragment.CenterSearchFragmentDirections
 import com.bluemap.overcom_blue.model.Center
 import com.bluemap.overcom_blue.repository.CenterDataSourceFactory
 import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.util.Util
-import io.reactivex.Observable
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_center_search.*
 import kotlinx.android.synthetic.main.fragment_center_search.view.*
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class CenterSearchFragment : Fragment() {
     private val imm: InputMethodManager by lazy{
         requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
-    private lateinit var repository :Repository
+    @Inject
+    lateinit var repository :Repository
     private lateinit var adapter : CenterPageAdapter
     private val disposable = CompositeDisposable()
     private lateinit var pagedItems : Disposable
@@ -47,10 +49,10 @@ class CenterSearchFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        repository = Repository(requireActivity().application)
         builder=RxPagedListBuilder<Int, Center>(CenterDataSourceFactory(repository, disposable), config)
         adapter = CenterPageAdapter(requireContext()){
-            val directions = CenterSearchFragmentDirections.actionCenterSearchFragmentToMapFragment(it)
+            val directions =
+                CenterSearchFragmentDirections.actionCenterSearchFragmentToMapFragment(it)
             findNavController().navigate(directions)
         }
         Log.d("CENTER_SEARCH","onCreate")

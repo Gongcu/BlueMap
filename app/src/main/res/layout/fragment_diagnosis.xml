@@ -5,7 +5,7 @@
     android:id="@+id/diagnosisFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.DiagnosisFragment">
+    tools:context=".ui.main.diagnosis.diagnosis.DiagnosisFragment">
 
 
     <com.google.android.material.textview.MaterialTextView

@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.PostFragment"
+    tools:context=".ui.main.board.post.PostFragment"
     >
     <data>
         <variable
             name="fragment"
-            type="com.bluemap.overcom_blue.fragment.PostFragment" />
+            type="com.bluemap.overcom_blue.ui.main.board.post.PostFragment" />
         <variable
             name="model"
             type="com.bluemap.overcom_blue.model.Post" />

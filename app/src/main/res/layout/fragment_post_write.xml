@@ -3,14 +3,14 @@
     <data>
         <variable
             name="fragment"
-            type="com.bluemap.overcom_blue.fragment.PostWriteFragment" />
+            type="com.bluemap.overcom_blue.ui.main.board.write_post.PostWriteFragment" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".fragment.PostWriteFragment">
+        tools:context=".ui.main.board.write_post.PostWriteFragment">
 
         <LinearLayout
             android:id="@+id/top_bar_linear_layout"

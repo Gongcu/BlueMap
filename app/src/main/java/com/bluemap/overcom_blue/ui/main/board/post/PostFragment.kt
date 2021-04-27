@@ -1,4 +1,4 @@
-package com.bluemap.overcom_blue.fragment
+package com.bluemap.overcom_blue.ui.main.board.post
 
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
@@ -10,27 +10,29 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.bluemap.overcom_blue.NavMainDirections
 import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.adapter.CommentAdapter
 import com.bluemap.overcom_blue.application.BaseApplication
 import com.bluemap.overcom_blue.databinding.FragmentPostBinding
+import com.bluemap.overcom_blue.fragment.PostFragmentArgs
 import com.bluemap.overcom_blue.model.Comment
 import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.util.Util
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_post.*
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class PostFragment : Fragment() {
     var postId:Int = -1
     var userId:Int = -1
-    private val repository: Repository by lazy {
-        Repository(requireActivity().application)
-    }
+
+    @Inject
+    lateinit var repository: Repository
+
     private val adapter: CommentAdapter by lazy{
         CommentAdapter(requireContext(), {
             replyModeOn(it.id!!)
@@ -40,7 +42,7 @@ class PostFragment : Fragment() {
     }
     lateinit var binding: FragmentPostBinding
     private val compositeDisposable = CompositeDisposable()
-    private val args:PostFragmentArgs by navArgs<PostFragmentArgs>()
+    private val args: PostFragmentArgs by navArgs<PostFragmentArgs>()
     private val imm: InputMethodManager by lazy{
         requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
     }
@@ -53,8 +55,8 @@ class PostFragment : Fragment() {
         userId = (requireActivity().application as BaseApplication).userId
 
         //NETWORKING
-        setPost(postId)
-        setComment(repository.getComment(postId))
+        setPost(postId,userId)
+        setComment(repository.getComment(postId,userId))
     }
 
     override fun onCreateView(
@@ -88,8 +90,8 @@ class PostFragment : Fragment() {
         compositeDisposable.add(disposable)
     }
 
-    private fun setPost(postId: Int) {
-        val disposable = repository.getPostById(postId).
+    private fun setPost(postId: Int,userId: Int) {
+        val disposable = repository.getPostById(postId,userId).
                 doOnSubscribe {
                     Util.progressOnInFragment(this)
                 }
@@ -112,7 +114,7 @@ class PostFragment : Fragment() {
     }
 
     fun likePost(postId: Int){
-        val disposable = repository.likePost(postId)
+        val disposable = repository.likePost(postId,userId)
             .subscribe { it ->
                 if (it) {
                     like_btn.setColorFilter(
@@ -132,7 +134,7 @@ class PostFragment : Fragment() {
     }
 
     private fun likeComment(commentId: Int, position: Int) {
-        val disposable = repository.likeComment(commentId)
+        val disposable = repository.likeComment(commentId,userId)
             .subscribe { it ->
                 if (it) {
                     adapter.list[position].like = 1
@@ -146,6 +148,8 @@ class PostFragment : Fragment() {
         compositeDisposable.add(disposable)
     }
 
+
+    //BINDING METHOD
     fun writeComment(){
         if(parentCommentId==-1)
             setComment(repository.writeComment(postId, Comment(userId, comment_edit_text.text.toString())))

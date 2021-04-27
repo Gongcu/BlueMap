@@ -4,8 +4,9 @@ import androidx.paging.DataSource
 import com.bluemap.overcom_blue.model.Center
 import com.bluemap.overcom_blue.model.Post
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
-class CenterDataSourceFactory(
+class CenterDataSourceFactory  @Inject constructor(
         private val repository: Repository,
         private val compositeDisposable: CompositeDisposable
     ) :DataSource.Factory<Int, Center>(){

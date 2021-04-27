@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/communityFragment"
-        android:name="com.bluemap.overcom_blue.fragment.BoardFragment"
+        android:name="com.bluemap.overcom_blue.ui.main.board.BoardFragment"
         android:label="fragment_community"
         tools:layout="@layout/fragment_board" >
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/diagnosisFragment"
-        android:name="com.bluemap.overcom_blue.fragment.DiagnosisFragment"
+        android:name="com.bluemap.overcom_blue.ui.main.diagnosis.diagnosis.DiagnosisFragment"
         android:label="fragment_diagnosis"
         tools:layout="@layout/fragment_diagnosis" >
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/resultFragment"
-        android:name="com.bluemap.overcom_blue.fragment.ResultFragment"
+        android:name="com.bluemap.overcom_blue.ui.main.diagnosis.result.ResultFragment"
         android:label="fragment_result"
         tools:layout="@layout/fragment_result" >
         <action
@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.bluemap.overcom_blue.fragment.MapFragment"
+        android:name="com.bluemap.overcom_blue.ui.main.diagnosis.map.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" >
         <action
@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/postWriteFragment"
-        android:name="com.bluemap.overcom_blue.fragment.PostWriteFragment"
+        android:name="com.bluemap.overcom_blue.ui.main.board.write_post.PostWriteFragment"
         android:label="fragment_post_write"
         tools:layout="@layout/fragment_post_write" />
     <action
@@ -74,7 +74,7 @@
         app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/postFragment"
-        android:name="com.bluemap.overcom_blue.fragment.PostFragment"
+        android:name="com.bluemap.overcom_blue.ui.main.board.post.PostFragment"
         android:label="fragment_post"
         tools:layout="@layout/fragment_post" >
         <argument
@@ -83,7 +83,7 @@
     </fragment>
     <fragment
         android:id="@+id/centerSearchFragment"
-        android:name="com.bluemap.overcom_blue.fragment.CenterSearchFragment"
+        android:name="com.bluemap.overcom_blue.ui.main.diagnosis.map.search.CenterSearchFragment"
         android:label="fragment_center_search"
         tools:layout="@layout/fragment_center_search" >
         <action

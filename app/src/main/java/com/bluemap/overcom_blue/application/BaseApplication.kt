@@ -2,6 +2,7 @@ package com.bluemap.overcom_blue.application
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.widget.ImageView
@@ -12,7 +13,9 @@ import com.bluemap.overcom_blue.util.ProgressDialogFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.kakao.sdk.common.KakaoSdk
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class BaseApplication : Application(){
     var userId : Int = 0
 
@@ -27,6 +30,21 @@ class BaseApplication : Application(){
         instance = null
     }
 
+
+    fun progressOn(context: Context) {
+        if (dialog == null || (dialog != null && dialog!!.isShowing)) {
+            dialog = AppCompatDialog(context).apply {
+                setCancelable(false)
+                window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
+                setContentView(R.layout.loading_dialog)
+                show()
+            }
+        }
+
+        Glide.with(context).load(R.raw.rolling_loader)
+            .apply(RequestOptions().override(50, 50))
+            .into(dialog!!.findViewById<ImageView>(R.id.load_image_view) as ImageView)
+    }
 
     fun progressOn(view: Activity?) {
         if (view == null || view.isFinishing)

@@ -1,20 +1,15 @@
 package com.bluemap.overcom_blue.repository
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.paging.PageKeyedDataSource
-import androidx.paging.PositionalDataSource
-import com.bluemap.overcom_blue.fragment.CenterSearchFragment
+import com.bluemap.overcom_blue.ui.main.diagnosis.map.search.CenterSearchFragment
 import com.bluemap.overcom_blue.model.Center
-import com.bluemap.overcom_blue.model.Post
-import com.bluemap.overcom_blue.network.BluemapAPI
-import com.bluemap.overcom_blue.network.Retrofit
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class CenterDataSource(
+class CenterDataSource  @Inject constructor(
         private val repository: Repository,
         private val compositeDisposable: CompositeDisposable
     ) : PageKeyedDataSource<Int, Center>() {

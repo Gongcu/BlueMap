@@ -1,9 +1,6 @@
-package com.bluemap.overcom_blue.fragment
+package com.bluemap.overcom_blue.ui.main.board
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,15 +10,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.bluemap.overcom_blue.R
-import com.bluemap.overcom_blue.activity.MainActivity
+import com.bluemap.overcom_blue.ui.main.MainActivity
 import com.bluemap.overcom_blue.adapter.PostPageAdapter
 import com.bluemap.overcom_blue.application.BaseApplication
+import com.bluemap.overcom_blue.fragment.BoardFragmentDirections
 import com.bluemap.overcom_blue.model.Post
 import com.bluemap.overcom_blue.repository.PostDataSource
 import com.bluemap.overcom_blue.repository.PostDataSourceFactory
 import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.util.Util
-import io.reactivex.Observable
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -32,10 +30,13 @@ import kotlinx.android.synthetic.main.fragment_board.*
 import kotlinx.android.synthetic.main.fragment_board.view.*
 import kotlinx.android.synthetic.main.item_notice.view.view_count_text_view
 import kotlinx.android.synthetic.main.item_post.view.*
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class BoardFragment : Fragment() {
     private var post : Post? = null
+
+    @Inject
     lateinit var repository: Repository
     lateinit var adapter: PostPageAdapter
     private val mDisposable = CompositeDisposable()
@@ -49,16 +50,16 @@ class BoardFragment : Fragment() {
         .setEnablePlaceholders(true)    //Pass false to disable null placeholders in PagedLists using this Config.
         .build()
 
-
+    private var userId : Int = -1
     //Callback when fragment is created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = PostPageAdapter(requireContext()) {
             goToPostFragment(it)
         }
-        repository = Repository(requireActivity().application)
-        noticeObservable = repository.getNotice()
-        builder = RxPagedListBuilder<Int, Post>(PostDataSourceFactory(repository,mDisposable), config)
+        userId = (requireActivity().application as BaseApplication).userId
+        noticeObservable = repository.getNotice(userId =userId )
+        builder = RxPagedListBuilder<Int, Post>(PostDataSourceFactory(userId,repository,mDisposable), config)
         initData()
     }
 
