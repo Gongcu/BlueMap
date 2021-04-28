@@ -4,7 +4,7 @@
 
     <data>
         <variable
-            name="model"
+            name="post"
             type="com.bluemap.overcom_blue.model.Post" />
     </data>
 
@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="공지사항"
+                android:text="@{post.title}"
                 android:textColor="@color/textColor"
                 android:textSize="16dp"
                 android:fontFamily="@font/godo_m"
@@ -70,7 +70,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:fontFamily="@font/godo_m"
-                    android:text="aaaa"
+                    android:text="관리자"
                     android:textSize="10dp" />
 
                 <TextView
@@ -86,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/godo_m"
-                    android:text="2021.01.07"
+                    android:text="@{post.createdAt.substring(0,10)}"
                     android:textSize="10dp"/>
 
                 <TextView
@@ -112,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:fontFamily="@font/godo_m"
-                    android:text="@{String.valueOf(model.viewCount)}"
+                    android:text="@{String.valueOf(post.viewCount)}"
                     android:textSize="10dp"/>
 
             </LinearLayout>
@@ -131,6 +131,7 @@
                     android:layout_width="13dp"
                     android:layout_height="13dp"
                     android:tint="@color/deepGray"
+                    app:setColorFilter="@{post.like}"
                     app:srcCompat="@drawable/ic_outline_thumb_up_24"/>
 
                 <TextView
@@ -139,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
                     android:fontFamily="@font/godo_m"
-                    android:text="@{String.valueOf(model.likeCount)}"
+                    android:text="@{String.valueOf(post.likeCount)}"
                     android:textColor="@color/gray"
                     android:textSize="10dp"
                     app:layout_constraintRight_toLeftOf="@+id/guide3"/>
@@ -158,7 +159,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
                     android:fontFamily="@font/godo_m"
-                    android:text="@{String.valueOf(model.commentCount)}"
+                    android:text="@{String.valueOf(post.commentCount)}"
                     android:textColor="@color/gray"
                     android:textSize="10dp"/>
 

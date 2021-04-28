@@ -1,17 +1,14 @@
-package com.bluemap.overcom_blue.adapter
+package com.bluemap.overcom_blue.ui.main.board.post_details
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.databinding.ItemCommentBinding
 import com.bluemap.overcom_blue.databinding.ItemReplyCommentBinding
 import com.bluemap.overcom_blue.model.Comment
-import kotlinx.android.synthetic.main.fragment_post.*
 
 class CommentAdapter(val context: Context,
                      var list: List<Comment>,
@@ -75,10 +72,6 @@ class CommentAdapter(val context: Context,
         fun bind(model: Comment){
             binding.root.tag=model.id
             binding.model=model
-            if(model.like == 1)
-                binding.likeBtn.setColorFilter(ContextCompat.getColor(context, R.color.deepBlue), android.graphics.PorterDuff.Mode.SRC_IN)
-            else
-                binding.likeBtn.setColorFilter(ContextCompat.getColor(context, R.color.deepGray), android.graphics.PorterDuff.Mode.SRC_IN)
         }
 
         override fun onClick(v: View) {
@@ -97,10 +90,6 @@ class CommentAdapter(val context: Context,
         fun bind(model: Comment){
             binding.root.tag=model.id
             binding.model=model
-            if(model.like == 1)
-                binding.likeBtn.setColorFilter(ContextCompat.getColor(context, R.color.deepBlue), android.graphics.PorterDuff.Mode.SRC_IN)
-            else
-                binding.likeBtn.setColorFilter(ContextCompat.getColor(context, R.color.deepGray), android.graphics.PorterDuff.Mode.SRC_IN)
         }
 
         override fun onClick(v: View) {

@@ -1,25 +1,18 @@
-package com.bluemap.overcom_blue.adapter
+package com.bluemap.overcom_blue.ui.main.diagnosis.map.search
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.databinding.ItemCenterBinding
-import com.bluemap.overcom_blue.databinding.ItemNoticeBinding
-import com.bluemap.overcom_blue.databinding.ItemPostBinding
 import com.bluemap.overcom_blue.model.Center
-import com.bluemap.overcom_blue.model.Post
-import kotlinx.android.synthetic.main.item_post.view.*
 
 class CenterPageAdapter(val context: Context,
                         val centerItemClick: (Center) -> Unit)
-    : PagedListAdapter<Center,CenterPageAdapter.ViewHolder>(diffUtil) {
+    : PagedListAdapter<Center, CenterPageAdapter.ViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemCenterBinding.inflate(

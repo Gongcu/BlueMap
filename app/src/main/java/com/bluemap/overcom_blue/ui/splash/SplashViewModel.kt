@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.bluemap.overcom_blue.application.BaseApplication
 import com.bluemap.overcom_blue.model.User
 import com.bluemap.overcom_blue.repository.Repository
+import com.bluemap.overcom_blue.user.UserManager
 import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
@@ -70,6 +71,7 @@ class SplashViewModel @Inject constructor(
         val disposable = repository.postUser(User(kakaoId)) //kakaoId
             .subscribe({
                 BaseApplication.instance!!.userId = it.id!!
+                UserManager.userId = it.id!!
                 if (it.name!!.isBlank())
                     loginResult.value = REGISTER_NEEDED
                 else

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import com.bluemap.overcom_blue.application.BaseApplication
 import com.bluemap.overcom_blue.model.User
 import com.bluemap.overcom_blue.repository.Repository
+import com.bluemap.overcom_blue.user.UserManager
 import com.bluemap.overcom_blue.util.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
@@ -28,7 +29,7 @@ class RegistrationViewModel @Inject constructor(
 
     fun fetchNickname(name: String){
         compositeDisposable.add(
-            repository.patchNickname(User(BaseApplication.instance!!.userId,name))
+            repository.patchNickname(User(UserManager.userId,name))
             .doOnSubscribe { Util.progressOn(context) }
             .doFinally { Util.progressOff() }
             .subscribe({

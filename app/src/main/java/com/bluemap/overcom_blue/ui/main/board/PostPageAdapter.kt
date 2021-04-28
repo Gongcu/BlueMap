@@ -1,24 +1,28 @@
-package com.bluemap.overcom_blue.adapter
+package com.bluemap.overcom_blue.ui.main.board
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.databinding.ItemNoticeBinding
 import com.bluemap.overcom_blue.databinding.ItemPostBinding
-import com.bluemap.overcom_blue.model.Center
 import com.bluemap.overcom_blue.model.Post
+import com.bluemap.overcom_blue.user.UserManager
+import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.android.synthetic.main.item_post.view.*
+import javax.inject.Inject
 
-class PostPageAdapter(val context: Context,
-                      val postItemClick: (Post) -> Unit)
-    : PagedListAdapter<Post,PostPageAdapter.ViewHolder>(diffUtil) {
+class PostPageAdapter @Inject constructor(
+    @ActivityContext private val context: Context,
+    private val navController: NavController
+)
+    : PagedListAdapter<Post, PostPageAdapter.ViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemPostBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -56,7 +60,10 @@ class PostPageAdapter(val context: Context,
         }
 
         override fun onClick(v: View?) {
-            postItemClick(getItem(adapterPosition)!!)
+            val post = getItem(adapterPosition)!!
+            val directions = BoardFragmentDirections.actionCommunityFragmentToPostFragment(post.id!!)
+            navController.navigate(directions)
+            UserManager.accessPostId = post.id!!
         }
     }
 
@@ -65,9 +72,9 @@ class PostPageAdapter(val context: Context,
             binding.root.setOnClickListener(this)
         }
 
-        fun bind(model: Post) {
-            binding.model = model
-            if(model.like!! == 1){
+        fun bind(post: Post) {
+            binding.post = post
+            if(post.like!! == 1){
                 binding.root.like_image_view.setColorFilter(ContextCompat.getColor(context, R.color.deepBlue), android.graphics.PorterDuff.Mode.SRC_IN)
             }else{
                 binding.root.like_image_view.setColorFilter(ContextCompat.getColor(context, R.color.deepGray), android.graphics.PorterDuff.Mode.SRC_IN)
@@ -75,7 +82,7 @@ class PostPageAdapter(val context: Context,
         }
 
         override fun onClick(v: View?) {
-            postItemClick(getItem(adapterPosition)!!)
+            //postItemClick(getItem(adapterPosition)!!)
         }
     }
 

@@ -72,15 +72,10 @@ object Util {
         BaseApplication.instance?.progressOffInFragment()
     }
 
-    /*
     fun progressOn(activity: FragmentActivity){
         BaseApplication.instance?.progressOn(activity)
-    }*/
+    }
     fun progressOff(){
         BaseApplication.instance?.progressOff()
-    }
-
-    fun progressOn(context: Context){
-        BaseApplication.instance?.progressOn(context)
     }
 }

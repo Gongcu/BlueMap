@@ -8,19 +8,19 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class PostDataSource @Inject constructor(
-        private val userId: Int,
+class PostDataSource (
         private val repository: Repository,
         private val compositeDisposable: CompositeDisposable
     ) : PageKeyedDataSource<Int,Post>() {
 
-    //자체적으로 백그라운드 스레드를 통해 비동기로 가져옴 -> UI 접근 불가
 
+
+    //자체적으로 백그라운드 스레드를 통해 비동기로 가져옴 -> UI 접근 불가
     override fun loadInitial(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, Post>
     ) {
-        val disposable = repository.getPostList(0,userId)
+        val disposable = repository.getPostList(0)
                 .subscribe { it ->
                     offset += it.size
                     Log.i(TAG, offset.toString())
@@ -34,7 +34,7 @@ class PostDataSource @Inject constructor(
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Post>) {
-        val disposable = repository.getPostList(params.key,userId)
+        val disposable = repository.getPostList(params.key)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe { it ->

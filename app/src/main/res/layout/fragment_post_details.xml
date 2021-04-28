@@ -3,15 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.main.board.post.PostFragment"
+    tools:context=".ui.main.board.post_details.PostDetailsFragment"
     >
     <data>
         <variable
             name="fragment"
-            type="com.bluemap.overcom_blue.ui.main.board.post.PostFragment" />
+            type="com.bluemap.overcom_blue.ui.main.board.post_details.PostDetailsFragment" />
         <variable
             name="model"
-            type="com.bluemap.overcom_blue.model.Post" />
+            type="com.bluemap.overcom_blue.model.Post"/>
+        <variable
+            name="viewModel"
+            type="com.bluemap.overcom_blue.ui.main.board.post_details.PostDetailsViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -87,7 +90,8 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/like_btn"
             android:clickable="true"
-            android:onClick="@{() -> fragment.likePost(model.id)}"
+            android:onClick="@{() -> viewModel.likePost(model.id)}"
+            app:setColorFilter="@{model.like}"
             app:srcCompat="@drawable/ic_outline_thumb_up_24"
             android:tint="@color/deepGray"
             android:layout_marginTop="8dp"
@@ -256,11 +260,12 @@
                 android:fontFamily="@font/godo_m"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.onKeyboardUp()}"
                 android:layout_weight="1"/>
 
             <ImageView
                 android:id="@+id/write_comment_btn"
-                android:onClick="@{() -> fragment.writeComment()}"
+                android:onClick="@{() -> viewModel.writeComment(commentEditText.getText().toString())}"
                 android:background="@drawable/ic_baseline_arrow_upward_24"
                 android:layout_marginLeft="4dp"
                 android:layout_width="30dp"

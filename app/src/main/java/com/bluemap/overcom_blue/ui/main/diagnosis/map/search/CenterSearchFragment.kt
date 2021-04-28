@@ -12,8 +12,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.bluemap.overcom_blue.R
-import com.bluemap.overcom_blue.adapter.CenterPageAdapter
-import com.bluemap.overcom_blue.fragment.CenterSearchFragmentDirections
 import com.bluemap.overcom_blue.model.Center
 import com.bluemap.overcom_blue.repository.CenterDataSourceFactory
 import com.bluemap.overcom_blue.repository.Repository

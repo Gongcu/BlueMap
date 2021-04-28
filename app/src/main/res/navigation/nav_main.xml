@@ -16,7 +16,7 @@
             app:enterAnim="@anim/horizontal_enter" />
         <action
             android:id="@+id/action_communityFragment_to_postFragment"
-            app:destination="@id/postFragment"
+            app:destination="@id/postDetailsFragment"
             app:enterAnim="@anim/horizontal_enter" />
     </fragment>
     <fragment
@@ -73,10 +73,10 @@
         app:popUpTo="@id/nav_main"
         app:popUpToInclusive="true" />
     <fragment
-        android:id="@+id/postFragment"
-        android:name="com.bluemap.overcom_blue.ui.main.board.post.PostFragment"
+        android:id="@+id/postDetailsFragment"
+        android:name="com.bluemap.overcom_blue.ui.main.board.post_details.PostDetailsFragment"
         android:label="fragment_post"
-        tools:layout="@layout/fragment_post" >
+        tools:layout="@layout/fragment_post_details" >
         <argument
             android:name="postId"
             app:argType="integer" />

@@ -19,8 +19,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bluemap.overcom_blue.R
-import com.bluemap.overcom_blue.fragment.MapFragmentArgs
-import com.bluemap.overcom_blue.fragment.MapFragmentDirections
 import com.bluemap.overcom_blue.model.Center
 import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.util.Util

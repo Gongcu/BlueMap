@@ -6,6 +6,7 @@ import com.bluemap.overcom_blue.model.Comment
 import com.bluemap.overcom_blue.model.Post
 import com.bluemap.overcom_blue.model.User
 import com.bluemap.overcom_blue.network.BluemapAPI
+import com.bluemap.overcom_blue.user.UserManager
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,7 +16,7 @@ import javax.inject.Singleton
 
 @Singleton
 class Repository @Inject constructor(
-    private val bluemapAPI: BluemapAPI
+        private val bluemapAPI: BluemapAPI
 ) {
 
     fun postUser(user: User):Single<User>{
@@ -31,14 +32,14 @@ class Repository @Inject constructor(
             .subscribeOn(Schedulers.io())
     }
 
-    fun getPostById(postId:Int, userId: Int):Single<Post>{
-        return bluemapAPI.getPostById(postId,userId)
+    fun getPostById(postId:Int):Single<Post>{
+        return bluemapAPI.getPostById(postId, UserManager.userId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
     }
 
-    fun getComment(postId: Int, userId: Int):Single<List<Comment>>{
-        return bluemapAPI.getComment(postId,userId)
+    fun getComment(postId: Int):Single<List<Comment>>{
+        return bluemapAPI.getComment(postId,UserManager.userId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
     }
@@ -55,8 +56,8 @@ class Repository @Inject constructor(
                 .subscribeOn(Schedulers.io())
     }
 
-    fun likeComment(commentId: Int,userId: Int):Single<Boolean>{
-        return bluemapAPI.likeComment(commentId,userId)
+    fun likeComment(commentId: Int,):Single<Boolean>{
+        return bluemapAPI.likeComment(commentId,UserManager.userId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
     }
@@ -68,14 +69,14 @@ class Repository @Inject constructor(
                 .subscribeOn(Schedulers.io())
     }
 
-    fun getNotice(userId: Int):Single<Post> {
-        return bluemapAPI.getNotice(userId)
+    fun getNotice():Single<Post> {
+        return bluemapAPI.getNotice(UserManager.userId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
     }
 
-    fun getPostList(offset:Int,userId: Int):Single<List<Post>> {
-        return bluemapAPI.getPostList(userId,offset)
+    fun getPostList(offset:Int):Single<List<Post>> {
+        return bluemapAPI.getPostList(UserManager.userId,offset)
     }
 
     fun getCenter(lat:Double, lng:Double):Single<List<Center>>{
@@ -87,8 +88,8 @@ class Repository @Inject constructor(
         return bluemapAPI.getCenterList(search,offset)
     }
 
-    fun likePost(postId: Int,userId: Int):Single<Boolean>{
-        return bluemapAPI.likePost(postId,userId)
+    fun likePost(postId: Int):Single<Boolean>{
+        return bluemapAPI.likePost(postId,UserManager.userId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
     }

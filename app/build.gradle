@@ -45,6 +45,9 @@ dependencies {
     def paging_version = "2.1.2"
     def hilt_version="2.31.2-alpha"
 
+    // https://mvnrepository.com/artifact/androidx.swiperefreshlayout/swiperefreshlayout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
     //fragment
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
     implementation "androidx.fragment:fragment-testing:$fragment_version"

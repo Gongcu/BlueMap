@@ -9,8 +9,6 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bluemap.overcom_blue.R
-import com.bluemap.overcom_blue.fragment.ResultFragmentArgs
-import com.bluemap.overcom_blue.fragment.ResultFragmentDirections
 import kotlinx.android.synthetic.main.fragment_result.*
 import kotlinx.android.synthetic.main.fragment_result.view.*
 

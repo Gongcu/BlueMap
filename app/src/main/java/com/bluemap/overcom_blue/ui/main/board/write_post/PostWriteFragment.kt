@@ -10,23 +10,32 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import com.bluemap.overcom_blue.application.BaseApplication
 import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.databinding.FragmentPostWriteBinding
 import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.model.Post
+import com.bluemap.overcom_blue.ui.main.MainActivity
 import com.bluemap.overcom_blue.util.Util
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_post_write.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class PostWriteFragment : Fragment() {
-    @Inject
-    lateinit var repository : Repository
+    val viewModel : PostWriteViewModel by viewModels()
+
     private lateinit var binding: FragmentPostWriteBinding
     private val imm: InputMethodManager by lazy{
         requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (requireActivity() as MainActivity).main_bottom_navigation.visibility=View.GONE
+
     }
 
     override fun onCreateView(
@@ -35,27 +44,16 @@ class PostWriteFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate<FragmentPostWriteBinding>(inflater,R.layout.fragment_post_write,container,false)
         binding.fragment = this@PostWriteFragment
-        return binding.root
-    }
+        binding.viewModel = viewModel
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val userId = (requireActivity().application as BaseApplication).userId
-        done_btn.setOnClickListener {
-            val post: Post = Post(userId, title_edit_text_view.text.toString(), content_edit_text_view.text.toString())
-            repository.writePost(post)
-                    .doOnSubscribe {
-                        Util.progressOnInFragment(this@PostWriteFragment)
-                    }.doFinally {
-                        Util.progressOffInFragment()
-                    }
-                    .subscribe({
-                        backToBoard()
-                    }, {
-                        Toast.makeText(requireActivity(), "게시글 작성 실패.", Toast.LENGTH_SHORT).show()
-                        Log.e("POST_WRITE", it.toString())
-                    })
-        }
+        viewModel.writeFinish.observe(viewLifecycleOwner,{
+            if(it)
+                backToBoard()
+            else
+                Toast.makeText(requireActivity(),"제목, 내용을 입력해주세요.",Toast.LENGTH_LONG).show()
+        })
+
+        return binding.root
     }
 
     fun backToBoard() = run {

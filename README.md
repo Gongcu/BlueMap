@@ -20,10 +20,12 @@
 - 사용자 위치 기반 정신 보건 시설 위치 제공
 - 우울증 극복 후기, 방법을 공유하는 커뮤니티
 
-### STACK🛠
+### SKILL🛠
 - Kotlin
 - RxJava
-- Jetpack(Paging, Data binding, Navigation)
+- Hilt
+- MVVM
+- AAC(Paging, Data binding, Navigation)
 - Glide
 - Retrofit
 - Naver Maps(Dynamic Mobile Map)

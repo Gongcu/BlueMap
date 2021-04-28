@@ -75,6 +75,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/like_btn"
                 app:srcCompat="@drawable/ic_outline_thumb_up_24"
+                app:setColorFilter="@{model.like}"
                 android:tint="@color/deepGray"
                 android:layout_width="16dp"
                 android:layout_height="16dp"

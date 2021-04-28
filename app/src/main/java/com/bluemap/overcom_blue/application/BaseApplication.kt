@@ -30,22 +30,6 @@ class BaseApplication : Application(){
         instance = null
     }
 
-
-    fun progressOn(context: Context) {
-        if (dialog == null || (dialog != null && dialog!!.isShowing)) {
-            dialog = AppCompatDialog(context).apply {
-                setCancelable(false)
-                window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
-                setContentView(R.layout.loading_dialog)
-                show()
-            }
-        }
-
-        Glide.with(context).load(R.raw.rolling_loader)
-            .apply(RequestOptions().override(50, 50))
-            .into(dialog!!.findViewById<ImageView>(R.id.load_image_view) as ImageView)
-    }
-
     fun progressOn(view: Activity?) {
         if (view == null || view.isFinishing)
             return

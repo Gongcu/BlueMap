@@ -1,4 +1,4 @@
-package com.bluemap.overcom_blue.adapter
+package com.bluemap.overcom_blue.ui.main.diagnosis.diagnosis
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +12,6 @@ import com.bluemap.overcom_blue.model.DiagnosisModel
 import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.databinding.ItemCompleteBinding
 import com.bluemap.overcom_blue.databinding.ItemDiagnosisBinding
-import com.bluemap.overcom_blue.ui.main.diagnosis.diagnosis.DiagnosisFragment
-import com.bluemap.overcom_blue.fragment.DiagnosisFragmentDirections
 import kotlinx.android.synthetic.main.item_diagnosis.view.*
 
 class DiagnosisAdapter(

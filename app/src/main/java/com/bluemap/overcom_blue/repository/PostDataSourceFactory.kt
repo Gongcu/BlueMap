@@ -5,12 +5,11 @@ import com.bluemap.overcom_blue.model.Post
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-class PostDataSourceFactory  @Inject constructor(
-        private val userId :Int,
+class PostDataSourceFactory (
         private val repository: Repository,
         private val compositeDisposable: CompositeDisposable
     ) :DataSource.Factory<Int, Post>(){
     override fun create(): DataSource<Int, Post> {
-        return PostDataSource(userId,repository,compositeDisposable)
+        return PostDataSource(repository,compositeDisposable)
     }
 }
