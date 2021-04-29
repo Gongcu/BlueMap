@@ -12,6 +12,9 @@
         <variable
             name="viewModel"
             type="com.bluemap.overcom_blue.ui.main.board.BoardViewModel" />
+        <variable
+            name="notice"
+            type="com.bluemap.overcom_blue.model.Post" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             layout="@layout/item_notice"
-            app:post = "@{viewModel.notice}"
+            app:post = "@{notice}"
             app:layout_constraintTop_toBottomOf="@+id/text_view"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

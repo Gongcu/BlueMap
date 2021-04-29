@@ -32,12 +32,17 @@ class SplashViewModel @Inject constructor(
 
     val loginResult = MutableLiveData<Int>(LOGIN_INIT)
 
+    init {
+        kakaoLogin()
+    }
+
+
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()
     }
 
-    fun kakaoLogin(){
+    private fun kakaoLogin(){
         UserApiClient.instance.me { user, error ->
             if (error != null) {
                 LoginClient.instance.run {
@@ -53,9 +58,8 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    private val callback:(OAuthToken?, Throwable?) -> Unit = { token, error ->
+    private val callback:(OAuthToken?, Throwable?) -> Unit = { _, error ->
         if (error != null) {
-            Log.e("LOGIN_ERORR", error.message)
             loginResult.value = LOGIN_FAILED
         } else {
             UserApiClient.instance.accessTokenInfo { tokenInfo, _ ->
@@ -70,7 +74,6 @@ class SplashViewModel @Inject constructor(
     private fun findOrCreateUser(kakaoId: Int){
         val disposable = repository.postUser(User(kakaoId)) //kakaoId
             .subscribe({
-                BaseApplication.instance!!.userId = it.id!!
                 UserManager.userId = it.id!!
                 if (it.name!!.isBlank())
                     loginResult.value = REGISTER_NEEDED

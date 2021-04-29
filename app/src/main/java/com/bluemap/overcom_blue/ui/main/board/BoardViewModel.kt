@@ -16,7 +16,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-private const val TAG = "BoardViewModel"
 
 @HiltViewModel
 class BoardViewModel @Inject constructor(
@@ -38,6 +37,8 @@ class BoardViewModel @Inject constructor(
     val posts = MutableLiveData<PagedList<Post>>()
     val notice = MutableLiveData<Post>()
     val refreshStatus = ObservableBoolean()
+
+    val search  = MutableLiveData<String>()
 
     init {
         loadPosts()

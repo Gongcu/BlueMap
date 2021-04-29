@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.bluemap.overcom_blue.ui.main.diagnosis.map.MapFragment"
+        android:name="com.bluemap.overcom_blue.ui.main.diagnosis.result.map.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" >
         <action
@@ -83,7 +83,7 @@
     </fragment>
     <fragment
         android:id="@+id/centerSearchFragment"
-        android:name="com.bluemap.overcom_blue.ui.main.diagnosis.map.search.CenterSearchFragment"
+        android:name="com.bluemap.overcom_blue.ui.main.diagnosis.result.map.search.CenterSearchFragment"
         android:label="fragment_center_search"
         tools:layout="@layout/fragment_center_search" >
         <action

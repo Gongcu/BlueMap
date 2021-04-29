@@ -20,7 +20,6 @@ import kotlinx.android.synthetic.main.fragment_board.*
 import kotlinx.android.synthetic.main.fragment_board.view.*
 import javax.inject.Inject
 
-private const val TAG = "BoardFragment"
 @AndroidEntryPoint
 class BoardFragment : Fragment() {
     private lateinit var binding: FragmentBoardBinding
@@ -48,13 +47,11 @@ class BoardFragment : Fragment() {
         binding = DataBindingUtil.inflate<FragmentBoardBinding>(inflater,R.layout.fragment_board,container,false)
         binding.viewModel = viewModel
         binding.fragment = this@BoardFragment
-        val view = binding.root
-
         viewModel.notice.observe(viewLifecycleOwner,{
-            bindNoticeView(view, it)
+            binding.notice = it
+            bindNoticeView(binding.root, it)
         })
-
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

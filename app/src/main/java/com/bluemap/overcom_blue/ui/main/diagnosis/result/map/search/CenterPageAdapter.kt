@@ -1,6 +1,5 @@
-package com.bluemap.overcom_blue.ui.main.diagnosis.map.search
+package com.bluemap.overcom_blue.ui.main.diagnosis.result.map.search
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bluemap.overcom_blue.databinding.ItemCenterBinding
 import com.bluemap.overcom_blue.model.Center
 
-class CenterPageAdapter(val context: Context,
-                        val centerItemClick: (Center) -> Unit)
-    : PagedListAdapter<Center, CenterPageAdapter.ViewHolder>(diffUtil) {
+class CenterPageAdapter (
+        private val onClickItem: (Center) -> Unit
+) : PagedListAdapter<Center, CenterPageAdapter.ViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemCenterBinding.inflate(
@@ -46,10 +45,9 @@ class CenterPageAdapter(val context: Context,
         }
 
         override fun onClick(v: View?) {
-            centerItemClick(getItem(adapterPosition)!!)
+            onClickItem(binding.model!!)
         }
     }
-
 
     companion object{
         val diffUtil = object : DiffUtil.ItemCallback<Center>(){

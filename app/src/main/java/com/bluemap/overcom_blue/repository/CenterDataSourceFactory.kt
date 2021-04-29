@@ -6,7 +6,7 @@ import com.bluemap.overcom_blue.model.Post
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-class CenterDataSourceFactory  @Inject constructor(
+class CenterDataSourceFactory (
         private val repository: Repository,
         private val compositeDisposable: CompositeDisposable
     ) :DataSource.Factory<Int, Center>(){

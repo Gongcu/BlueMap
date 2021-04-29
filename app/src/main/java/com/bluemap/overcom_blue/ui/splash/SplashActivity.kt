@@ -17,8 +17,6 @@ private const val TAG = "SplashActivity"
 
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
-    @Inject
-    lateinit var repository : Repository
 
     private val viewModel: SplashViewModel by viewModels()
 
@@ -26,21 +24,18 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        viewModel.kakaoLogin()
-
         viewModel.loginResult.observe(this,{
             when(it){
                 SplashViewModel.LOGIN_INIT -> Log.i(TAG,"Start Login")
                 SplashViewModel.LOGIN_FAILED -> Toast.makeText(this,"로그인에 실패했습니다.",Toast.LENGTH_LONG).show()
                 SplashViewModel.REGISTER_NEEDED -> startRegistrationActivity()
-                else -> startMainActivity(it)
+                else -> startMainActivity()
             }
         })
     }
 
-    private fun startMainActivity(userId: Int){
+    private fun startMainActivity(){
         val intent = Intent(this@SplashActivity, MainActivity::class.java)
-        intent.putExtra("userId", userId)
         startActivity(intent)
         this@SplashActivity.finish()
     }

@@ -2,14 +2,13 @@ package com.bluemap.overcom_blue.repository
 
 import android.util.Log
 import androidx.paging.PageKeyedDataSource
-import com.bluemap.overcom_blue.ui.main.diagnosis.map.search.CenterSearchFragment
 import com.bluemap.overcom_blue.model.Center
+import com.bluemap.overcom_blue.ui.main.diagnosis.result.map.search.CenterSearchViewModel.Companion.centerSearchText
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
 
-class CenterDataSource  @Inject constructor(
+class CenterDataSource (
         private val repository: Repository,
         private val compositeDisposable: CompositeDisposable
     ) : PageKeyedDataSource<Int, Center>() {
@@ -20,7 +19,7 @@ class CenterDataSource  @Inject constructor(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, Center>
     ) {
-        val disposable = repository.getCenter(CenterSearchFragment.search,0)
+        val disposable = repository.getCenter(centerSearchText,0)
                 .subscribe { it ->
                     offset += it.size
                     Log.i(TAG, offset.toString())
@@ -34,7 +33,7 @@ class CenterDataSource  @Inject constructor(
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Center>) {
-        val disposable = repository.getCenter(CenterSearchFragment.search,params.key)
+        val disposable = repository.getCenter(centerSearchText,params.key)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe { it ->

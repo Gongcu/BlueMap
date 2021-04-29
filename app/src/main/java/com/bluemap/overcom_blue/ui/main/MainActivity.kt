@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        (application as BaseApplication).userId=intent.extras!!.getInt("userId")
         Util.requestPermission(application)
         NavigationUI.setupWithNavController(main_bottom_navigation, navController)
     }

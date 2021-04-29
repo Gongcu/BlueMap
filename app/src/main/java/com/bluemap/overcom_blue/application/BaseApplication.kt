@@ -17,7 +17,6 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class BaseApplication : Application(){
-    var userId : Int = 0
 
     override fun onCreate() {
         super.onCreate()

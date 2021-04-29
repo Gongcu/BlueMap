@@ -2,6 +2,9 @@ package com.bluemap.overcom_blue.ui.registration
 
 import android.app.Application
 import android.util.Log
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,27 +20,36 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
-    application: Application,
     val repository: Repository
-) : AndroidViewModel(application){
-
-    private val context = getApplication<Application>().applicationContext
+) : ViewModel(){
 
     private val compositeDisposable = CompositeDisposable()
 
-    lateinit var userLiveData : MutableLiveData<User>
+    val user : MutableLiveData<User> = MutableLiveData()
 
-    fun fetchNickname(name: String){
+    val onEditorActionListener = TextView.OnEditorActionListener { v, actionId, event ->
+        if (actionId == EditorInfo.IME_ACTION_DONE || event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+            onLoginBtnClick(v.text.toString())
+            true
+        } else {
+            false
+        }
+    }
+
+    private fun fetchNickname(name: String){
         compositeDisposable.add(
             repository.patchNickname(User(UserManager.userId,name))
-            .doOnSubscribe { Util.progressOn(context) }
-            .doFinally { Util.progressOff() }
             .subscribe({
-                userLiveData = MutableLiveData<User>(it)
+                user.value = it
             }, {
-                Log.d("SET_USER_ACTIVITY", it.message)
+                Log.d("REGISTRATION_ERROR", it.message)
             })
         )
+    }
+
+    fun onLoginBtnClick(name : String){
+        if (name.isNotBlank())
+               fetchNickname(name)
     }
 
     override fun onCleared() {

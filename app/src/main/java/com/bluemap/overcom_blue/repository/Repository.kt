@@ -1,10 +1,7 @@
 package com.bluemap.overcom_blue.repository
 
 
-import com.bluemap.overcom_blue.model.Center
-import com.bluemap.overcom_blue.model.Comment
-import com.bluemap.overcom_blue.model.Post
-import com.bluemap.overcom_blue.model.User
+import com.bluemap.overcom_blue.model.*
 import com.bluemap.overcom_blue.network.BluemapAPI
 import com.bluemap.overcom_blue.user.UserManager
 import io.reactivex.Completable
@@ -79,8 +76,8 @@ class Repository @Inject constructor(
         return bluemapAPI.getPostList(UserManager.userId,offset)
     }
 
-    fun getCenter(lat:Double, lng:Double):Single<List<Center>>{
-        return bluemapAPI.getCenter(lat,lng)
+    fun getCenter(location: Location):Single<List<Center>>{
+        return bluemapAPI.getCenter(location.latitude,location.longitude)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
     }
