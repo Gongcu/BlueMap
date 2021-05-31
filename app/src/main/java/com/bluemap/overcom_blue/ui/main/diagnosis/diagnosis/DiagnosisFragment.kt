@@ -26,6 +26,7 @@ class DiagnosisFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        recycler_view.setHasFixedSize(true)
         recycler_view.adapter = adapter
     }
 

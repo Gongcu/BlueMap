@@ -47,7 +47,7 @@ class DiagnosisAdapter(
     }
 
     override fun getItemCount(): Int {
-        return list.size+1
+        return list.size+FINISH_BUTTON_COUNT
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -105,11 +105,14 @@ class DiagnosisAdapter(
                     sum+=list[i].point
                 }
             }
-            //if(complete){
+            if(complete){
                 val direction: NavDirections =
                         DiagnosisFragmentDirections.actionDiagnosisFragmentToResultFragment(sum)
                 fragment.findNavController().navigate(direction)
-            //}
+            }
         }
+    }
+    companion object {
+        const val FINISH_BUTTON_COUNT = 1
     }
 }

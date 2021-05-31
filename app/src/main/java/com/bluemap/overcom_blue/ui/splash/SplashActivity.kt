@@ -10,6 +10,9 @@ import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.ui.main.MainActivity
 import com.bluemap.overcom_blue.ui.registration.RegistrationActivity
 import com.bluemap.overcom_blue.repository.Repository
+import com.kakao.sdk.auth.LoginClient
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -24,6 +27,8 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+        startKakaoLogin()
+
         viewModel.loginResult.observe(this,{
             when(it){
                 SplashViewModel.LOGIN_INIT -> Log.i(TAG,"Start Login")
@@ -32,6 +37,33 @@ class SplashActivity : AppCompatActivity() {
                 else -> startMainActivity()
             }
         })
+    }
+
+    private fun startKakaoLogin(){
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                LoginClient.instance.run {
+                    if(isKakaoTalkLoginAvailable(this@SplashActivity))
+                        loginWithKakaoTalk(this@SplashActivity,callback = callback)
+                    else
+                        loginWithKakaoAccount(this@SplashActivity,callback = callback)
+                }
+            }
+            else if (user != null) {
+                viewModel.findOrCreateUser(user.id.toInt())
+            }
+        }
+    }
+
+    private val callback:(OAuthToken?, Throwable?) -> Unit = { _, error ->
+        if (error != null) {
+            Log.d(TAG, "kakaoLoginCallback: ${error.message}")
+            Toast.makeText(this,"로그인 실패",Toast.LENGTH_LONG).show()
+        } else {
+            UserApiClient.instance.accessTokenInfo { tokenInfo, _ ->
+                viewModel.findOrCreateUser(tokenInfo!!.id.toInt())
+            }
+        }
     }
 
     private fun startMainActivity(){

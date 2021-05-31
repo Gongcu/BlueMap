@@ -20,7 +20,7 @@ class ProgressDialogFragment :DialogFragment(){
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             setContentView(R.layout.loading_dialog)
         }
-        Glide.with(activity!!).load(R.raw.rolling_loader)
+        Glide.with(requireActivity()).load(R.raw.rolling_loader)
                 .apply(RequestOptions().override(50,50))
                 .into(dialog.findViewById<ImageView>(R.id.load_image_view) as ImageView)
         return dialog

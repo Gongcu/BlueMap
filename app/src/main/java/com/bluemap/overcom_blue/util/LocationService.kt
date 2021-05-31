@@ -25,9 +25,7 @@ class LocationService @Inject constructor(
     private val locationManager =
             context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-    private val availableService =
-    when {
-        locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ->  GPS
+    private val availableLocationService = when {
         locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ->  NETWORK
         else -> LOCATION_UNAVAILABLE
     }
@@ -49,26 +47,21 @@ class LocationService @Inject constructor(
 
     fun requestSingleUpdate(){
         checkPermission()
-        when(availableService){
-            GPS -> locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, Looper.myLooper())
+        when(availableLocationService){
             NETWORK -> locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, locationListener, Looper.myLooper())
             else -> Log.i(TAG,"Cannot available location service")
         }
     }
 
 
-
-    fun checkPermission(){
+    private fun checkPermission(){
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             return
     }
 
-
-
     companion object{
         private const val LOCATION_UNAVAILABLE = 1000
-        private const val GPS = 1001
         private const val NETWORK = 1002
     }
 }

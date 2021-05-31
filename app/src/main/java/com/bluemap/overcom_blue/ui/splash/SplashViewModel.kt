@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.bluemap.overcom_blue.application.BaseApplication
 import com.bluemap.overcom_blue.model.User
 import com.bluemap.overcom_blue.repository.Repository
@@ -21,20 +22,12 @@ private const val TAG = "SplashViewModel"
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    application: Application,
     val repository: Repository
-) : AndroidViewModel(application){
-
-    //https://stackoverflow.com/questions/51451819/how-to-get-context-in-android-mvvm-viewmodel
-    private val context = getApplication<Application>().applicationContext
+) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
 
     val loginResult = MutableLiveData<Int>(LOGIN_INIT)
-
-    init {
-        kakaoLogin()
-    }
 
 
     override fun onCleared() {
@@ -42,36 +35,11 @@ class SplashViewModel @Inject constructor(
         compositeDisposable.clear()
     }
 
-    private fun kakaoLogin(){
-        UserApiClient.instance.me { user, error ->
-            if (error != null) {
-                LoginClient.instance.run {
-                    if(isKakaoTalkLoginAvailable(context))
-                        loginWithKakaoTalk(context,callback = callback)
-                    else
-                        loginWithKakaoAccount(context,callback = callback)
-                }
-            }
-            else if (user != null) {
-                findOrCreateUser(user.id.toInt())
-            }
-        }
-    }
-
-    private val callback:(OAuthToken?, Throwable?) -> Unit = { _, error ->
-        if (error != null) {
-            loginResult.value = LOGIN_FAILED
-        } else {
-            UserApiClient.instance.accessTokenInfo { tokenInfo, _ ->
-                findOrCreateUser(tokenInfo!!.id.toInt())
-            }
-        }
-    }
 
     /**
      * Call the method When Kakao Login success
      */
-    private fun findOrCreateUser(kakaoId: Int){
+    fun findOrCreateUser(kakaoId: Int){
         val disposable = repository.postUser(User(kakaoId)) //kakaoId
             .subscribe({
                 UserManager.userId = it.id!!
@@ -80,6 +48,7 @@ class SplashViewModel @Inject constructor(
                 else
                     loginResult.value = it.id
             }, {
+                loginResult.value = LOGIN_FAILED
                 Log.d(TAG, it.toString())
             })
         compositeDisposable.add(disposable)
