@@ -8,4 +8,5 @@ object UserManager {
     var userId : Int = -1
     var accessPostId : Int = -1
     var currentLocation = Location(37.570975,126.977759) //Default : 광화문
+
 }

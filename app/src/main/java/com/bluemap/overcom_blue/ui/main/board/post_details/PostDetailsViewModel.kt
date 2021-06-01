@@ -98,6 +98,8 @@ class PostDetailsViewModel @Inject constructor(
 
     //댓글 작성 완료 버튼 클릭
     fun writeComment(comment: String){
+        if(comment.isBlank())
+            return
         if(parentCommentId==-1)
             setComments(repository.writeComment(UserManager.accessPostId, Comment(UserManager.userId,comment)))
         else

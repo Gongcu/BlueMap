@@ -43,7 +43,10 @@ class CenterSearchFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_center_search, null, false)
+        binding.lifecycleOwner = this
         binding.viewModel = centerSearchViewModel
+        binding.fragment = this
+
         centerSearchViewModel.centers.observe(viewLifecycleOwner, {
             adapter.submitList(it)
         })
@@ -55,6 +58,16 @@ class CenterSearchFragment : Fragment() {
         search_edit_text_view.requestFocus()
         recycler_view.adapter = adapter
         imm.showSoftInput(search_edit_text_view, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    val onEditorActionListener = TextView.OnEditorActionListener { v, actionId, event ->
+        if (actionId == EditorInfo.IME_ACTION_DONE || event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+            Log.d("ENTER", "ENTER")
+            centerSearchViewModel.search()
+            true
+        } else {
+            false
+        }
     }
 
     private fun moveToMapView(center: Center){

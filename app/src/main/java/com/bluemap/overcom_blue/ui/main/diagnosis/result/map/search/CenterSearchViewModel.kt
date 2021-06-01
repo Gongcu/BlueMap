@@ -5,6 +5,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
@@ -34,20 +35,8 @@ class CenterSearchViewModel @Inject constructor(
 
     val centers = MutableLiveData<PagedList<Center>>()
 
-    val onEditorActionListener = TextView.OnEditorActionListener { v, actionId, event ->
-        if (actionId == EditorInfo.IME_ACTION_DONE || event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
-            Log.d("ENTER", "ENTER")
-            search(v.text.toString())
-            true
-        } else {
-            false
-        }
-    }
 
-
-
-    fun search(text:  String) {
-        centerSearchText = text
+    fun search() {
         val pagedItems = builder.buildObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -65,6 +54,6 @@ class CenterSearchViewModel @Inject constructor(
     }
 
     companion object {
-        var centerSearchText = ""
+        val searchText = ObservableField<String>("")
     }
 }
