@@ -21,8 +21,7 @@ import javax.inject.Inject
 class PostPageAdapter @Inject constructor(
     @ActivityContext private val context: Context,
     private val navController: NavController
-)
-    : PagedListAdapter<Post, PostPageAdapter.ViewHolder>(diffUtil) {
+) : PagedListAdapter<Post, PostPageAdapter.ViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemPostBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -64,25 +63,6 @@ class PostPageAdapter @Inject constructor(
             val directions = BoardFragmentDirections.actionCommunityFragmentToPostFragment(post.id!!)
             navController.navigate(directions)
             UserManager.accessPostId = post.id!!
-        }
-    }
-
-    inner class NoticeViewHolder(val binding: ItemNoticeBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
-        init{
-            binding.root.setOnClickListener(this)
-        }
-
-        fun bind(post: Post) {
-            binding.post = post
-            if(post.like!! == 1){
-                binding.root.like_image_view.setColorFilter(ContextCompat.getColor(context, R.color.deepBlue), android.graphics.PorterDuff.Mode.SRC_IN)
-            }else{
-                binding.root.like_image_view.setColorFilter(ContextCompat.getColor(context, R.color.deepGray), android.graphics.PorterDuff.Mode.SRC_IN)
-            }
-        }
-
-        override fun onClick(v: View?) {
-            //postItemClick(getItem(adapterPosition)!!)
         }
     }
 

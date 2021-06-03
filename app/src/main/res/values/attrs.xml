@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BackButton">
+    </declare-styleable>
+    <declare-styleable name="postInfo">
+        <attr name="writer" format="string" />
+        <attr name="date" format="string" />
+        <attr name="viewCount" format="integer" />
+    </declare-styleable>
+</resources>

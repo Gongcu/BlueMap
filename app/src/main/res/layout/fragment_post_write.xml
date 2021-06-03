@@ -8,56 +8,32 @@
             name="viewModel"
             type="com.bluemap.overcom_blue.ui.main.board.write_post.PostWriteViewModel" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".ui.main.board.write_post.PostWriteFragment">
 
-        <LinearLayout
-            android:id="@+id/top_bar_linear_layout"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:layout_marginHorizontal="2dp"
-            android:layout_width="match_parent"
+        <com.bluemap.overcom_blue.custom_view.CustomBackButton
+            android:id="@+id/back_btn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="@{()->fragment.backToBoard()}"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+            app:layout_constraintTop_toTopOf="parent"/>
 
-            <ImageView
-                android:id="@+id/back_btn"
-                android:background="@drawable/ic_baseline_arrow_back_24"
-                android:layout_marginLeft="4dp"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:onClick="@{()->fragment.backToBoard()}"/>
+        <ImageView
+            android:id="@+id/done_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/ic_baseline_done_24"
+            android:onClick="@{(v)->viewModel.writePost(titleEditTextView.getText().toString(),contentEditTextView.getText().toString())}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/back_text_view"
-                android:text="뒤로가기"
-                android:fontFamily="@font/godo_m"
-                android:textColor="@color/deepBlue"
-                android:textSize="20sp"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{()->fragment.backToBoard()}"/>
-            <View
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="0dp"/>
-
-            <ImageView
-                android:id="@+id/done_btn"
-                android:layout_gravity="right"
-                android:layout_marginRight="4dp"
-                android:background="@drawable/ic_baseline_done_24"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{(v)->viewModel.writePost(titleEditTextView.getText().toString(),contentEditTextView.getText().toString())}"/>
-        </LinearLayout>
 
         <EditText
             android:id="@+id/title_edit_text_view"
@@ -74,7 +50,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginHorizontal="8dp"
             android:background="@null"
-            app:layout_constraintTop_toBottomOf="@+id/top_bar_linear_layout"
+            app:layout_constraintTop_toBottomOf="@+id/back_btn"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
 

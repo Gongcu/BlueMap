@@ -26,8 +26,6 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.dialog_center_info.view.*
 import javax.inject.Inject
 
-private const val TAG = "MapVIewModel"
-
 @HiltViewModel
 class MapVIewModel @Inject constructor(
         private val repository: Repository,

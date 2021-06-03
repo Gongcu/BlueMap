@@ -17,8 +17,7 @@ import kotlinx.android.synthetic.main.item_diagnosis.view.*
 class DiagnosisAdapter(
         val list: ArrayList<DiagnosisModel>,
         private val fragment: DiagnosisFragment
-)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if(viewType == R.layout.item_complete){
             val binding = ItemCompleteBinding.inflate(
@@ -57,7 +56,9 @@ class DiagnosisAdapter(
             position
     }
 
-    inner class ItemViewHolder(val binding: ItemDiagnosisBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
+    inner class ItemViewHolder(
+            val binding: ItemDiagnosisBinding
+    ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
         init {
             binding.root.so_disagree_btn.setOnClickListener (this)
             binding.root.disagree_btn.setOnClickListener (this)
@@ -88,7 +89,9 @@ class DiagnosisAdapter(
         }
     }
 
-    inner class CompleteViewHolder(val binding: ItemCompleteBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
+    inner class CompleteViewHolder(
+            val binding: ItemCompleteBinding
+    ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
         init {
             binding.root.setOnClickListener(this)
         }

@@ -19,7 +19,6 @@ import javax.inject.Inject
 
 private const val TAG = "PostDetailsViewModel"
 
-
 @HiltViewModel
 class PostDetailsViewModel @Inject constructor(
         private val repository: Repository

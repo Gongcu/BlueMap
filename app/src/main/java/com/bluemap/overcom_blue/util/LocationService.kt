@@ -16,7 +16,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Deferred
 import javax.inject.Inject
 
-private const val TAG = "LocationService"
 
 class LocationService @Inject constructor(
         @ApplicationContext private val context:Context,
@@ -63,5 +62,6 @@ class LocationService @Inject constructor(
     companion object{
         private const val LOCATION_UNAVAILABLE = 1000
         private const val NETWORK = 1002
+        private const val TAG = "LocationService"
     }
 }

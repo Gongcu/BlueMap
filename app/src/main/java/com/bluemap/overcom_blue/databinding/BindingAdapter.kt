@@ -15,15 +15,6 @@ import com.naver.maps.map.MapView
 import com.naver.maps.map.OnMapReadyCallback
 
 object BindingAdapter {
-    /*
-    @JvmStatic
-    @BindingAdapter("onRefresh")
-    fun onRefresh(swipeRefreshLayout: SwipeRefreshLayout, load:()->Unit){
-        swipeRefreshLayout.setOnRefreshListener {
-            load()
-        }
-    }*/
-
     @JvmStatic
     @BindingAdapter("setColorFilter")
     fun setColorFilter(imageView: AppCompatImageView, like:Int){
@@ -31,13 +22,6 @@ object BindingAdapter {
             imageView.setColorFilter(ContextCompat.getColor(imageView.context, R.color.deepBlue), android.graphics.PorterDuff.Mode.SRC_IN)
         else
             imageView.setColorFilter(ContextCompat.getColor(imageView.context, R.color.deepGray), android.graphics.PorterDuff.Mode.SRC_IN)
-    }
-
-    @JvmStatic
-    @BindingAdapter("getMapAsync")
-    fun getMapAsync(mapview: MapView, callback:OnMapReadyCallback){
-        Log.d("NAVER_MAP","ASYNC CALLBACK")
-        mapview.getMapAsync(callback)
     }
 
     @JvmStatic
