@@ -78,8 +78,8 @@ class Repository @Inject constructor(
 
     fun getCenter(location: Location):Single<List<Center>>{
         return bluemapAPI.getCenter(location.latitude,location.longitude)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+                //.observeOn(AndroidSchedulers.mainThread())
+                //.subscribeOn(Schedulers.io())
     }
     fun getCenter(search:String, offset:Int):Single<List<Center>>{
         return bluemapAPI.getCenterList(search,offset)

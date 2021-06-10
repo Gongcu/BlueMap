@@ -22,7 +22,9 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.dialog_center_info.view.*
 import javax.inject.Inject
 
@@ -50,6 +52,8 @@ class MapVIewModel @Inject constructor(
     fun getCentersByLocation(latLng: LatLng){
         val location = Location(latLng.latitude,latLng.longitude)
         val disposable = repository.getCenter(location)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe { it ->
                 val newVisibleCenters= it.filter { center ->
                     !visibleCenter.contains(center)

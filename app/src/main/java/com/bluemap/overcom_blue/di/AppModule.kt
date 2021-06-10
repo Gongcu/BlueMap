@@ -11,11 +11,12 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-private const val BASE_URL = "https://bluemap.site/"
 
 @Module
 @InstallIn(SingletonComponent::class) // => ApplicationComponent is deprecated
 object AppModule {
+    const val BASE_URL = "https://bluemap.site/"
+
     @Provides
     @Singleton
     fun provideRetrofit() = Retrofit.Builder()

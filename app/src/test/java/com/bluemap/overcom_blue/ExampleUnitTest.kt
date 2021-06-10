@@ -17,6 +17,7 @@ import org.junit.Test
 import org.junit.Assert.*
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
@@ -48,6 +49,6 @@ class ApiUnitTest {
         val center = mock(Center::class.java)
         val temp = Single.just(listOf(center) as List<Center>)
         Mockito.`when`(bluemapAPI.getCenter(location.latitude,location.longitude)).thenReturn(temp)
-        assertThat(repository.getCenter(location),`isA`(Single::class.java))
+        assertThat(repository.getCenter(location), isA(Single::class.java))
     }
 }
