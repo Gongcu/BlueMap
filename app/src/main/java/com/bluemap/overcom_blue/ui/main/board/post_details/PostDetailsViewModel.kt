@@ -13,7 +13,9 @@ import com.bluemap.overcom_blue.user.UserManager
 import com.bluemap.overcom_blue.util.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_post_details.*
 import javax.inject.Inject
 
@@ -42,8 +44,10 @@ class PostDetailsViewModel @Inject constructor(
         compositeDisposable.clear()
     }
 
-    private fun getPost(postId: Int) {
+    fun getPost(postId: Int) {
         val disposable = repository.getPostById(postId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe({
                     post.value = it
                 }, {
@@ -52,8 +56,10 @@ class PostDetailsViewModel @Inject constructor(
         compositeDisposable.add(disposable)
     }
 
-    private fun getComments(postId: Int) {
-        val disposable =repository.getComment(postId)
+    fun getComments(postId: Int) {
+        val disposable =repository.getComments(postId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe({
                     comments.value = it
                 }, {
@@ -64,6 +70,8 @@ class PostDetailsViewModel @Inject constructor(
 
     private fun setComments(observable: Single<List<Comment>>) {
         val disposable =observable
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe({
                     comments.value = it
                 }, {
@@ -74,6 +82,8 @@ class PostDetailsViewModel @Inject constructor(
 
     fun likePost(postId: Int){
         val disposable = repository.likePost(postId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe { it ->
                     post.value = post.value?.copy(like=it.compareTo(false))
                 }
@@ -82,6 +92,8 @@ class PostDetailsViewModel @Inject constructor(
 
     fun likeComment(commentId: Int, position: Int) {
         val disposable = repository.likeComment(commentId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe { it ->
                     if (it) {
                         comments.value?.get(position)?.like = 1
@@ -106,13 +118,13 @@ class PostDetailsViewModel @Inject constructor(
         post.value?.commentCount = post.value?.commentCount!! + 1
         parentCommentId=-1
 
-        writeCommentFinish.value = true
+        writeCommentFinish.postValue(true)
     }
 
 
     //KeyboardUp
     fun onKeyboardUp(){
         Log.i(TAG,"KEYBOARD UP")
-        writeCommentFinish.value = false
+        writeCommentFinish.postValue(false)
     }
 }

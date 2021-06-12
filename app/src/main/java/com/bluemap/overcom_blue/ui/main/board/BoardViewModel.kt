@@ -65,12 +65,15 @@ class BoardViewModel @Inject constructor(
         mDisposable.add(pagedItems)
     }
 
-    private fun getNotice(){
-        val disposable = repository.getNotice().subscribe ({ it ->
-            notice.value = it
-        },{
-            it.stackTrace
-        })
+    fun getNotice() {
+        val disposable = repository.getNotice()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ it ->
+                    notice.value = it
+                }, {
+                    it.stackTrace
+                })
         mDisposable.add(disposable)
     }
 }

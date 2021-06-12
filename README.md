@@ -24,6 +24,7 @@
 - Kotlin
 - RxJava
 - Hilt
+- Unit Test (MockWebServer, JUnit)
 - MVVM
 - AAC(Paging, Data binding, Navigation)
 - Glide

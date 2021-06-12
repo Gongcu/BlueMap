@@ -31,45 +31,30 @@ class Repository @Inject constructor(
 
     fun getPostById(postId:Int):Single<Post>{
         return bluemapAPI.getPostById(postId, UserManager.userId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
     }
 
-    fun getComment(postId: Int):Single<List<Comment>>{
+    fun getComments(postId: Int):Single<List<Comment>>{
         return bluemapAPI.getComment(postId,UserManager.userId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
     }
 
     fun writeComment(postId: Int,comment:Comment):Single<List<Comment>>{
         return bluemapAPI.writeComment(postId, comment)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
     }
 
     fun writeReplyComment(postId:Int, commentId: Int,comment: Comment): Single<List<Comment>> {
         return bluemapAPI.writeReplyComment(postId,commentId,comment)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
     }
 
     fun likeComment(commentId: Int,):Single<Boolean>{
         return bluemapAPI.likeComment(commentId,UserManager.userId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
     }
-
 
     fun writePost(post: Post): Completable {
         return bluemapAPI.writePost(post)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
     }
 
     fun getNotice():Single<Post> {
         return bluemapAPI.getNotice(UserManager.userId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
     }
 
     fun getPostList(offset:Int):Single<List<Post>> {
@@ -78,8 +63,6 @@ class Repository @Inject constructor(
 
     fun getCenter(location: Location):Single<List<Center>>{
         return bluemapAPI.getCenter(location.latitude,location.longitude)
-                //.observeOn(AndroidSchedulers.mainThread())
-                //.subscribeOn(Schedulers.io())
     }
     fun getCenter(search:String, offset:Int):Single<List<Center>>{
         return bluemapAPI.getCenterList(search,offset)
@@ -87,7 +70,5 @@ class Repository @Inject constructor(
 
     fun likePost(postId: Int):Single<Boolean>{
         return bluemapAPI.likePost(postId,UserManager.userId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
     }
 }

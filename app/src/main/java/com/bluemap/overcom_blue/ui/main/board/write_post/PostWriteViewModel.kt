@@ -9,7 +9,9 @@ import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.user.UserManager
 import com.bluemap.overcom_blue.util.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_post_write.*
 import javax.inject.Inject
 
@@ -27,14 +29,16 @@ class PostWriteViewModel @Inject constructor(
             return
         }
 
-        val post = Post(UserManager.userId,title,content)
+        val post = Post(UserManager.userId, title, content)
         val disposable = repository.writePost(post)
-            .subscribe({
-                writeFinish.value = true
-            }, {
-                writeFinish.value = false
-                Log.e("POST_WRITE", it.toString())
-            })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    writeFinish.value = true
+                }, {
+                    writeFinish.value = false
+                    Log.e("POST_WRITE", it.toString())
+                })
         mDisposable.add(disposable)
     }
 

@@ -13,6 +13,7 @@ android {
 
     defaultConfig {
         applicationId "com.bluemap.overcom_blue"
+        testApplicationId "com.bluemap.overcom_blue.test"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 6
@@ -38,7 +39,7 @@ android {
     testOptions{
         unitTests.returnDefaultValues = true
     }
-    
+
     dataBinding {
         enabled = true
     }

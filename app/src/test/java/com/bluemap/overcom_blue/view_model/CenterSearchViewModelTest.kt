@@ -19,7 +19,7 @@ class CenterSearchViewModelTest : ApiAbstract<BluemapAPI>(){
 
     @Before
     fun setup(){
-        service = createService(BluemapAPI::class.java)
+        service = createService(BluemapAPI::class.java,AppModule.BASE_URL)
         repository = Repository(service)
         viewModel = CenterSearchViewModel(repository)
     }

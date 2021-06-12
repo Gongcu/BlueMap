@@ -18,9 +18,45 @@ import java.nio.charset.StandardCharsets
 @RunWith(JUnit4::class)
 abstract class ApiAbstract<T> {
 
-    fun createService(clazz: Class<T>): T {
+    lateinit var mockWebServer : MockWebServer
+
+    @Throws(IOException::class)
+    @Before
+    fun mockServer() {
+        mockWebServer = MockWebServer()
+        mockWebServer.start()
+    }
+
+    @Throws(IOException::class)
+    @After
+    fun stopServer() {
+        mockWebServer.shutdown()
+    }
+
+    @Throws(IOException::class)
+    fun enqueueResponse(fileName: String) {
+        enqueueResponse(fileName, emptyMap())
+    }
+
+
+    @Throws(IOException::class)
+    fun enqueueResponseWithHeader(fileName: String, headers: Map<String, String>) {
+        enqueueResponse(fileName, headers)
+    }
+    @Throws(IOException::class)
+    private fun enqueueResponse(fileName: String, headers: Map<String, String>) {
+        val inputStream = javaClass.classLoader!!.getResourceAsStream("api_response/${fileName}")
+        val source = inputStream.source().buffer()
+        val mockResponse = MockResponse()
+        for ((key, value) in headers) {
+            mockResponse.addHeader(key, value)
+        }
+        mockWebServer.enqueue(mockResponse.setBody(source.readString(StandardCharsets.UTF_8)))
+    }
+
+    fun createService(clazz: Class<T>, url : String): T {
         return Retrofit.Builder()
-                .baseUrl(AppModule.BASE_URL)
+                .baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
