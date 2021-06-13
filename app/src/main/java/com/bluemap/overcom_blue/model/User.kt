@@ -1,7 +1,9 @@
 package com.bluemap.overcom_blue.model
 
+import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.RequiresApi
 
 data class User(
     val id:Int?,
@@ -11,6 +13,7 @@ data class User(
     var bluePoint:Int?
 ): Parcelable {
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readInt(),
@@ -21,6 +24,7 @@ data class User(
 
     constructor(kakaoId: Int?):this(null,kakaoId,null,null,null)
     constructor(id: Int?,name: String):this(id,null,name,null,null)
+    constructor(id: Int?,name: String,login: Boolean?,bluePoint: Int?):this(id,null,name,login,bluePoint)
 
     override fun describeContents(): Int {
         return 0

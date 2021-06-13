@@ -14,7 +14,9 @@ import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 private const val TAG = "SplashViewModel"
@@ -39,18 +41,20 @@ class SplashViewModel @Inject constructor(
     /**
      * Call the method When Kakao Login success
      */
-    fun findOrCreateUser(kakaoId: Int){
+    fun findOrCreateUser(kakaoId: Int) {
         val disposable = repository.postUser(User(kakaoId)) //kakaoId
-            .subscribe({
-                UserManager.userId = it.id!!
-                if (it.name!!.isBlank())
-                    loginResult.value = REGISTER_NEEDED
-                else
-                    loginResult.value = it.id
-            }, {
-                loginResult.value = LOGIN_FAILED
-                Log.d(TAG, it.toString())
-            })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    UserManager.userId = it.id!!
+                    if (it.name!!.isBlank())
+                        loginResult.value = REGISTER_NEEDED
+                    else
+                        loginResult.value = it.id
+                }, {
+                    loginResult.value = LOGIN_FAILED
+                    Log.d(TAG, it.toString())
+                })
         compositeDisposable.add(disposable)
     }
 

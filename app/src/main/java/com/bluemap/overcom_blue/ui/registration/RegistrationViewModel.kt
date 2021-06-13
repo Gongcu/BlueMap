@@ -15,7 +15,9 @@ import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.user.UserManager
 import com.bluemap.overcom_blue.util.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,15 +38,16 @@ class RegistrationViewModel @Inject constructor(
         }
     }
 
-    private fun fetchNickname(name: String){
-        compositeDisposable.add(
-            repository.patchNickname(User(UserManager.userId,name))
-            .subscribe({
-                user.value = it
-            }, {
-                Log.d("REGISTRATION_ERROR", it.message)
-            })
-        )
+    fun fetchNickname(name: String) {
+        val disposable = repository.patchNickname(User(UserManager.userId, name))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    user.value = it
+                }, {
+                    Log.d("REGISTRATION_ERROR", it.message)
+                })
+        compositeDisposable.add(disposable)
     }
 
     fun onLoginBtnClick(name : String){

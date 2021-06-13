@@ -18,15 +18,10 @@ class Repository @Inject constructor(
 
     fun postUser(user: User):Single<User>{
         return bluemapAPI.postUser(user)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-
     }
 
     fun patchNickname(user: User):Single<User>{
         return bluemapAPI.patchNickname(user)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
     }
 
     fun getPostById(postId:Int):Single<Post>{
