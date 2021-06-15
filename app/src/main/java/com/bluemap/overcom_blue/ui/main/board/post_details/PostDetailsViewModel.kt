@@ -3,6 +3,7 @@ package com.bluemap.overcom_blue.ui.main.board.post_details
 import android.app.Application
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import androidx.databinding.ObservableField
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,6 +34,7 @@ class PostDetailsViewModel @Inject constructor(
     val comments: MutableLiveData<List<Comment>> = MutableLiveData<List<Comment>>()
     val writeCommentFinish: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
     val reloadSpecificComment : MutableLiveData<Int> = MutableLiveData<Int>()
+    val commentText :  ObservableField<String> = ObservableField<String>("")
 
     init {
         getPost(UserManager.accessPostId)
@@ -108,13 +110,13 @@ class PostDetailsViewModel @Inject constructor(
     }
 
     //댓글 작성 완료 버튼 클릭
-    fun writeComment(comment: String){
-        if(comment.isBlank())
+    fun writeComment(){
+        if(commentText.get()!!.isBlank())
             return
         if(parentCommentId==-1)
-            setComments(repository.writeComment(UserManager.accessPostId, Comment(UserManager.userId,comment)))
+            setComments(repository.writeComment(UserManager.accessPostId, Comment(UserManager.userId,commentText.get()!!)))
         else
-            setComments(repository.writeReplyComment(UserManager.accessPostId, parentCommentId, Comment(UserManager.userId, comment)))
+            setComments(repository.writeReplyComment(UserManager.accessPostId, parentCommentId, Comment(UserManager.userId, commentText.get()!!)))
         post.value?.commentCount = post.value?.commentCount!! + 1
         parentCommentId=-1
 

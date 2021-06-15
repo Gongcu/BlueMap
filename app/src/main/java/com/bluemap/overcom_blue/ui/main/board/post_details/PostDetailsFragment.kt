@@ -3,10 +3,13 @@ package com.bluemap.overcom_blue.ui.main.board.post_details
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -48,6 +51,7 @@ class PostDetailsFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate<FragmentPostDetailsBinding>(inflater, R.layout.fragment_post_details, container, false)
         binding.fragment=this@PostDetailsFragment
+        binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
 
@@ -66,7 +70,6 @@ class PostDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         recycler_view.adapter = adapter
 
-
         viewModel.reloadSpecificComment.observe(viewLifecycleOwner,{
             adapter.notifyItemChanged(it)
         })
@@ -78,6 +81,15 @@ class PostDetailsFragment : Fragment() {
                 comment_edit_text.setText("")
             }
         })
+    }
+
+    val onEditorActionListener = TextView.OnEditorActionListener { v, actionId, event ->
+        if (actionId == EditorInfo.IME_ACTION_DONE || event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+            viewModel.writeComment()
+            true
+        } else {
+            false
+        }
     }
 
 
