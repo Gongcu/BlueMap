@@ -10,7 +10,6 @@ import com.bluemap.overcom_blue.application.BaseApplication
 import com.bluemap.overcom_blue.model.User
 import com.bluemap.overcom_blue.repository.Repository
 import com.bluemap.overcom_blue.user.UserManager
-import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.lifecycle.HiltViewModel

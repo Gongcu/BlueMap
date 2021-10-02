@@ -9,12 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bluemap.overcom_blue.R
 import com.bluemap.overcom_blue.ui.main.MainActivity
 import com.bluemap.overcom_blue.ui.registration.RegistrationActivity
-import com.bluemap.overcom_blue.repository.Repository
-import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 private const val TAG = "SplashActivity"
 
@@ -42,12 +39,7 @@ class SplashActivity : AppCompatActivity() {
     private fun startKakaoLogin(){
         UserApiClient.instance.me { user, error ->
             if (error != null) {
-                LoginClient.instance.run {
-                    if(isKakaoTalkLoginAvailable(this@SplashActivity))
-                        loginWithKakaoTalk(this@SplashActivity,callback = callback)
-                    else
-                        loginWithKakaoAccount(this@SplashActivity,callback = callback)
-                }
+                UserApiClient.instance.loginWithKakaoAccount(this, callback = loginCallback)
             }
             else if (user != null) {
                 viewModel.findOrCreateUser(user.id.toInt())
@@ -55,16 +47,15 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
-    private val callback:(OAuthToken?, Throwable?) -> Unit = { _, error ->
+    private val loginCallback : (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
-            Log.d(TAG, "kakaoLoginCallback: ${error.message}")
-            Toast.makeText(this,"로그인 실패",Toast.LENGTH_LONG).show()
-        } else {
-            UserApiClient.instance.accessTokenInfo { tokenInfo, _ ->
-                viewModel.findOrCreateUser(tokenInfo!!.id.toInt())
-            }
+            Log.e(TAG, "로그인 실패", error)
+        }
+        else if (token != null) {
+            Log.d(TAG, "startKakaoLogin: ${token.accessToken} 성공")
         }
     }
+
 
     private fun startMainActivity(){
         val intent = Intent(this@SplashActivity, MainActivity::class.java)
